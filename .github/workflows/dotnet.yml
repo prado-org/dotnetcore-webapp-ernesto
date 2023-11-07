@@ -54,17 +54,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download APP Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: app
-          path: app-artifact
-      
-      - name: Download API Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: api
-          path: api-artifact
+      - uses: actions/download-artifact@v3
+
+      - name: Display structure of downloaded files
+        run: ls -R
       
       - name: Set version date
         run: |
@@ -79,7 +72,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: my-first-project-webapi
-          package: api-artifact
+          package: PublishApi
         
       - name: Set APP Settings
         uses: Azure/appservice-settings@v1
@@ -103,4 +96,4 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: my-first-project-webapp
-          package: app-artifact
+          package: PublishApp
