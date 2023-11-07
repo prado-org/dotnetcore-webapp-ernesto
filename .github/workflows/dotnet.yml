@@ -13,7 +13,7 @@ env:
   CONFIGURATION: Release
   
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -61,8 +61,8 @@ jobs:
         name: api-artifact
         path: PublishApi
   
-  release:
-    needs: build
+  Dev:
+    needs: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v3
