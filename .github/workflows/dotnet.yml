@@ -66,39 +66,20 @@ jobs:
           name: api
           path: api-artifact
       
-      #- name: Variable Substitution API
-      #  uses: microsoft/variable-substitution@v1
-      #  with:
-      #    files: api-artifact/appsettings.json
-      #  env:
-      #    ConnectionStrings.ContosoUniversityAPIContext: ${{ secrets.AZURE_CONTOSO_CONN_STRING }}
-      #    ApplicationInsights.ConnectionString: ${{ secrets.AZURE_CONTOSO_APP_INSIGHTS }}
-      
-      #- name: Variable Substitution APP
-      #  uses: microsoft/variable-substitution@v1
-      #  with:
-      #    files: app-artifact/appsettings.json
-      #  env:
-      #    Api.Address: https://${{ env.AZ_API_NAME }}.azurewebsites.net/
-      #    ApplicationInsights.ConnectionString: ${{ secrets.AZURE_CONTOSO_APP_INSIGHTS }}
-      
+      - name: Set version date
+        run: |
+          echo "APP_VERSION_DATE=$(date +'%d/%m/%Y %H:%M:%S')" >> $GITHUB_ENV
+          
       - name: Azure Login
         uses: Azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
-      - name: List WebApps
-        run: az webapp list -o table
       
       - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
           app-name: my-first-project-webapi
           package: api-artifact
-      
-      - name: Set version date
-        run: |
-          echo "APP_VERSION_DATE=$(date +'%d-%m-%YT%H:%M:%S')" >> $GITHUB_ENV
         
       - name: Set APP Settings
         uses: Azure/appservice-settings@v1
