@@ -41,13 +41,13 @@ jobs:
     - name: Upload APP Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: app
+        name: app-artifact
         path: PublishApp
     
     - name: Upload API Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: api
+        name: api-artifact
         path: PublishApi
   
   release:
@@ -72,7 +72,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: my-first-project-webapi
-          package: PublishApi
+          package: api-artifact
         
       - name: Set APP Settings
         uses: Azure/appservice-settings@v1
@@ -96,4 +96,4 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: my-first-project-webapp
-          package: PublishApp
+          package: app-artifact
