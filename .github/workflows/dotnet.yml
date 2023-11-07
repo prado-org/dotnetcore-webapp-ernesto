@@ -55,9 +55,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v3
-
-      - name: Display structure of downloaded files
-        run: ls -R
       
       - name: Set version date
         run: |
