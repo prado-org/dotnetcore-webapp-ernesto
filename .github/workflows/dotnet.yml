@@ -86,7 +86,10 @@ jobs:
         uses: Azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+      
+      - name: List WebApps
+        run: az webapp list -o table
+      
       - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
