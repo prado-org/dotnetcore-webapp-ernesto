@@ -98,7 +98,7 @@ jobs:
       
       - name: Set version date
         run: |
-          echo "APP_VERSION_DATE=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+          echo "APP_VERSION_DATE=$(date +'%d-%m-%YT%H:%M:%S')" >> $GITHUB_ENV
         
       - name: Set APP Settings
         uses: Azure/appservice-settings@v1
