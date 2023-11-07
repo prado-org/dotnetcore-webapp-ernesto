@@ -30,7 +30,7 @@ jobs:
       run: dotnet build src/MyFirstProject.sln --configuration ${{ env.CONFIGURATION }} --no-restore
     
     - name: Test
-      run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal
+      run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --configuration ${{ env.CONFIGURATION }} --verbosity normal
 
     - name: Publish APP
       run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApp
