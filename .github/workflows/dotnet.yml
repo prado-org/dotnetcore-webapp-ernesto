@@ -33,10 +33,10 @@ jobs:
       run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --configuration ${{ env.CONFIGURATION }} --verbosity normal
 
     - name: Publish APP
-      run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApp
+      run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --configuration ${{ env.CONFIGURATION }} --output PublishApp
 
     - name: Publish API
-      run: dotnet publish src/MyFirstProject.WebApi/MyFirstProject.WebApi.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApi
+      run: dotnet publish src/MyFirstProject.WebApi/MyFirstProject.WebApi.csproj --configuration ${{ env.CONFIGURATION }} --output PublishApi
 
     - name: Upload APP Artifact
       uses: actions/upload-artifact@v3
