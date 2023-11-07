@@ -7,10 +7,12 @@ namespace MyFirstProject.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -20,6 +22,8 @@ namespace MyFirstProject.WebApp.Controllers
 
         public IActionResult Privacy()
         {
+            ViewBag.VersionInfoNumber = _configuration.GetSection("VersionInfo:Number").Value;
+            ViewBag.VersionInfoDate = _configuration.GetSection("VersionInfo:Date").Value;
             return View();
         }
 
