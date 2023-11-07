@@ -90,11 +90,11 @@ jobs:
       - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
-          app-name: myapiname
+          app-name: my-first-project-webapi
           package: api-artifact
       
       - name: Deploy APP
         uses: azure/webapps-deploy@v3
         with:
-          app-name: myappname
+          app-name: my-first-project-webapp
           package: app-artifact
