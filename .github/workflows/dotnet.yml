@@ -91,13 +91,13 @@ jobs:
         run: az webapp list -o table
       
       - name: Deploy API
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: my-first-project-webapi
           package: api-artifact
       
       - name: Deploy APP
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: my-first-project-webapp
           package: app-artifact
