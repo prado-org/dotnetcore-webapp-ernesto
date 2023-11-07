@@ -30,8 +30,19 @@ jobs:
       run: dotnet build src/MyFirstProject.sln --configuration ${{ env.CONFIGURATION }} --no-restore
     
     - name: Test
-      run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal
+      run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal --logger "trx;LogFileName=test-results.trx"
 
+    - name: LS
+      run: ls -R
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()      # run this step even if previous step failed
+      with:
+        name: Tests                   # Name of the check run which will be created
+        path: TestResults/*.trx      # Path to test results
+        reporter: dotnet-trx          # Format of test results
+        
     - name: Publish APP
       run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApp
 
