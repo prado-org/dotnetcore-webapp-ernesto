@@ -29,16 +29,16 @@ jobs:
       run: dotnet restore src/MyFirstProject.sln
     
     - name: Build
-      run: dotnet build --configuration ${{ env.CONFIGURATION }} src/MyFirstProject.sln --no-restore
+      run: dotnet build src/MyFirstProject.sln --configuration ${{ env.CONFIGURATION }} --no-restore
     
     - name: Test
-      run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --verbosity normal
+      run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --configuration ${{ env.CONFIGURATION }} --verbosity normal
 
     - name: Publish APP
-      run: dotnet publish --configuration ${{ env.CONFIGURATION }} --output PublishApp src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj
+      run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --configuration ${{ env.CONFIGURATION }} --output PublishApp
 
     - name: Publish API
-      run: dotnet publish --configuration ${{ env.CONFIGURATION }} --output PublishApi src/MyFirstProject.WebApi/MyFirstProject.WebApi.csproj
+      run: dotnet publish src/MyFirstProject.WebApi/MyFirstProject.WebApi.csproj --configuration ${{ env.CONFIGURATION }} --output PublishApi
 
     - name: Upload APP Artifact
       uses: actions/upload-artifact@v2
