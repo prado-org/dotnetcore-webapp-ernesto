@@ -94,6 +94,7 @@ jobs:
   Dev:
     needs: Build
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - uses: actions/download-artifact@v3
       
@@ -138,6 +139,7 @@ jobs:
   Prd:
     needs: Dev
     runs-on: ubuntu-latest
+    environment: prd
     steps:
       - uses: actions/download-artifact@v3
       
