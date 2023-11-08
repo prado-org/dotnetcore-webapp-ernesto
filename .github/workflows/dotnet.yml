@@ -135,3 +135,47 @@ jobs:
         with:
           app-name: app-myfirstproject-dev
           package: app-artifact
+  Prd:
+    needs: Dev
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+      
+      - name: Set version date
+        run: |
+          echo "APP_VERSION_DATE=$(date +'%d/%m/%Y %H:%M:%S')" >> $GITHUB_ENV
+          
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Deploy API
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: api-myfirstproject-prd
+          package: api-artifact
+        
+      - name: Set APP Settings
+        uses: Azure/appservice-settings@v1
+        with:
+          app-name: app-myfirstproject-prd
+          app-settings-json: |
+            [
+              {
+                "name": "VersionInfo__Number",
+                "value": "1.0.${{ github.run_number }}",
+                "slotSetting": false
+              },
+              {
+                "name": "VersionInfo__Date",
+                "value": "${{ env.APP_VERSION_DATE }}",
+                "slotSetting": false
+              }
+            ]
+
+      - name: Deploy APP
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: app-myfirstproject-prd
+          package: app-artifact
