@@ -11,8 +11,30 @@ on:
 
 env:
   CONFIGURATION: Release
+  AZ_LOCATION: eastus
+  AZ_APP_NAME: MyFirstProject
   
 jobs:
+  Infra:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Deploy Template
+      uses: Azure/arm-deploy@v1
+      with:
+        scope: subscription
+        region: ${{ env.AZ_LOCATION }}
+        template: iac/main.bicep
+        deploymentMode: Incremental
+        deploymentName: 'gh-actions'
+        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev
+
   Build:
     runs-on: ubuntu-latest
     steps:
@@ -32,16 +54,13 @@ jobs:
     - name: Test
       run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal --logger "trx;LogFileName=test-results.trx"
 
-    - name: LS
-      run: ls -R
-
     - name: Test Report
       uses: dorny/test-reporter@v1
-      if: success() || failure()      # run this step even if previous step failed
+      if: success() || failure()
       with:
-        name: Tests                   # Name of the check run which will be created
-        path: src/MyFirstProject.Tests/TestResults/*.trx      # Path to test results
-        reporter: dotnet-trx          # Format of test results
+        name: UnitTests
+        path: src/MyFirstProject.Tests/TestResults/*.trx
+        reporter: dotnet-trx
         
     - name: Publish APP
       run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApp
