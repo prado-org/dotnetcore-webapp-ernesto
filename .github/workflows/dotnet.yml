@@ -25,7 +25,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    - name: Deploy Template
+    - name: Create environment dev
       uses: Azure/arm-deploy@v1
       with:
         scope: subscription
@@ -34,6 +34,16 @@ jobs:
         deploymentMode: Incremental
         deploymentName: 'gh-actions'
         parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev
+    
+    - name: Create environment prd
+      uses: Azure/arm-deploy@v1
+      with:
+        scope: subscription
+        region: ${{ env.AZ_LOCATION }}
+        template: iac/main.bicep
+        deploymentMode: Incremental
+        deploymentName: 'gh-actions'
+        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=prd
 
   Build:
     needs: Infra
@@ -99,13 +109,13 @@ jobs:
       - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
-          app-name: my-first-project-webapi
+          app-name: api-myfirstproject-dev
           package: api-artifact
         
       - name: Set APP Settings
         uses: Azure/appservice-settings@v1
         with:
-          app-name: my-first-project-webapp
+          app-name: app-myfirstproject-dev
           app-settings-json: |
             [
               {
@@ -123,5 +133,5 @@ jobs:
       - name: Deploy APP
         uses: azure/webapps-deploy@v3
         with:
-          app-name: my-first-project-webapp
+          app-name: app-myfirstproject-dev
           package: app-artifact
