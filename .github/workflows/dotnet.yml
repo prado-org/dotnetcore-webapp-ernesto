@@ -36,6 +36,7 @@ jobs:
         parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev
 
   Build:
+    needs: Infra
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
