@@ -5,5 +5,3 @@ My First Project
 - src/MyFirstProject.WebApp
 - src/MyFirstProject.WebApi
 - src/MyFirstProject.Tests
-
-teste
