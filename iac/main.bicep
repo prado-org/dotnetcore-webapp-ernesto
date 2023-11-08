@@ -26,6 +26,7 @@ module webApp './webApp.bicep' = {
     planId: servicePlan.outputs.servicePlanId
     webAppName: 'app-${webAppName}-${environment}'
     location: location
+    linuxFxVersion: 'DOTNETCORE|6.0'
   }
 }
 
@@ -36,5 +37,6 @@ module webApi './webApp.bicep' = {
     planId: servicePlan.outputs.servicePlanId
     webAppName: 'api-${webAppName}-${environment}'
     location: location
+    linuxFxVersion: 'DOTNETCORE|6.0'
   }
 }
