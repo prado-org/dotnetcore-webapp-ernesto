@@ -8,12 +8,12 @@ This tutorial shows you how to:
 - :eight_spoked_asterisk: Explore IDE features
 - :eight_spoked_asterisk: Run the web app
 
-# Projects
+## Projects
 - :arrow_right: src/MyFirstProject.WebApp
 - :arrow_right: src/MyFirstProject.WebApi
 - :arrow_right: src/MyFirstProject.Tests
 
-# Build Process
+## Build Process
 
 ```
 # Restore Packages
@@ -32,3 +32,9 @@ dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build
 dotnet publish src/MyFirstProject.WebApi/MyFirstProject.WebApi.csproj --no-build --configuration Debug --output PublishApi
 
 ```
+
+## Contribute
+
+Contributions are always welcome!
+
+Please read the [contribution guidelines](contributing.md) first.
