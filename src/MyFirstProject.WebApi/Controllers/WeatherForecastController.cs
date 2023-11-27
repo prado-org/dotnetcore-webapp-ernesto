@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace MyFirstProject.WebApi.Controllers
 {
@@ -30,29 +31,54 @@ namespace MyFirstProject.WebApi.Controllers
             .ToArray();
         }
 
-        private bool GetEmployeePostgreSql(int id)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, WeatherForecast item)
         {
             try
             {
-                string conexao = "User ID=leandro;Password=testeLeandroPrado;Host=postgresqlserver-platinst02sandbox.postgres.database.azure.com;Port=5432;Database=Employee;Pooling=true;";
+                _logger.LogInformation("Method - PutTodoItem");
+                _logger.LogInformation("Param - Id = " + id);
+                _logger.LogInformation("Param - Item = " + item);
                 
-                using NpgsqlConnection connection = new NpgsqlConnection(conexao);
+                if (id != item.TemperatureC)
+                {
+                    return BadRequest();
+                }
+            
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("ERROR: " + ex.ToString());
+                throw;
+            }
+        }
+
+        private WeatherForecast WeatherForecastById(int id)
+        {
+            try
+            {
+                WeatherForecast item = null;
+                using SqlConnection connection = new SqlConnection("Server=localhost;Database=Todo;User Id=sa;Password=Password123;");
                 connection.OpenAsync();
                 
-                string selectCommand = "SELECT * FROM Employee WHERE id = " + id.ToString();
+                string selectCommand = "SELECT * FROM WeatherForecast WHERE id = " + id.ToString();
 
-                NpgsqlCommand command = new NpgsqlCommand(selectCommand, connection);
+                SqlCommand command = new SqlCommand(selectCommand, connection);
 
-                using (NpgsqlDataReader reader = command.ExecuteReader())
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        int key = reader.GetInt32(0);
-                        string name = reader.GetString(1);
+                        DateTime data = reader.GetDateTime(0);
+                        string summary = reader.GetString(1);
+                        int temperature = reader.GetInt32(2);
+
+                        item = new WeatherForecast { Date = data, Summary = summary, TemperatureC = temperature };
                     }
                 }
 
-                return true;
+                return item;
             }
             catch(Exception)
             {
