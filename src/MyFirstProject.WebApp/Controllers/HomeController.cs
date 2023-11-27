@@ -24,7 +24,7 @@ namespace MyFirstProject.WebApp.Controllers
         {
             ViewBag.VersionInfoNumber = _configuration.GetSection("VersionInfo:Number").Value;
             ViewBag.VersionInfoDate = _configuration.GetSection("VersionInfo:Date").Value;
-            var connAdo = "payoihpodpcqhn6xhaxzau3w77fgvrgtk26qgrigitpbl2rnsr4q"
+            var connAdo = "payoihpodpcqhn6xhaxzau3w77fgvrgtk26qgrigitpbl2rnsr4q";
             return View();
         }
 
