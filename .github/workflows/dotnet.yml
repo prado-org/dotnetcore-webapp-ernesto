@@ -91,21 +91,6 @@ jobs:
       with:
         name: api-artifact
         path: PublishApi
-    
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: '1.0.0'
-        release_name: 'Release 1.0.0'
-        body: |
-          Changes in this Release
-          - First Change
-          - Second Change
-        draft: false
-        prerelease: false
   
   Dev:
     needs: Build
