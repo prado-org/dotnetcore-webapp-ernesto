@@ -1,5 +1,5 @@
 # About 
-In this tutorial for C# development with ASP.NET Core, you create a C# ASP.NET Core web app in Visual Studio.
+In this tutorial for C# development with ASP.NET Core, you create a C# ASP.NET Core web app in Visual Studio or Visual Studio Code.
 
 This tutorial shows you how to:
 
