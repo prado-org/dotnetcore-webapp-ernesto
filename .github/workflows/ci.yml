@@ -30,14 +30,22 @@ jobs:
     
     - name: Test
       run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal --logger "trx;LogFileName=test-results.trx"
-            
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()
+
+    - name: use this action, test solution dir
+      uses: zyborg/dotnet-tests-report@v1
       with:
-        name: UnitTests
-        path: src/MyFirstProject.Tests/TestResults/*.trx
-        reporter: dotnet-trx
+        project_path: src/MyFirstProject.Tests
+        report_name: my_project_tests
+        report_title: My Project Tests
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        
+    #- name: Test Report
+    #  uses: dorny/test-reporter@v1
+    #  if: success() || failure()
+    #  with:
+    #    name: UnitTests
+    #    path: src/MyFirstProject.Tests/TestResults/*.trx
+    #    reporter: dotnet-trx
         
     - name: Publish APP
       run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApp
