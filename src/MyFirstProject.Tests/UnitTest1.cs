@@ -20,5 +20,11 @@ namespace MyFirstProject.Tests
         {
             Assert.IsTrue(true);
         }
+
+        [TestMethod]
+        public void TestMethod4()
+        {
+            Assert.IsTrue(true);
+        }
     }
 }
