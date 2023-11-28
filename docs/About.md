@@ -3,15 +3,15 @@ In this tutorial for C# development with ASP.NET Core, you create a C# ASP.NET C
 
 This tutorial shows you how to:
 
-- :eight_spoked_asterisk: Create a Visual Studio project
-- :eight_spoked_asterisk: Create a C# ASP.NET Core web app
-- :eight_spoked_asterisk: Explore IDE features
-- :eight_spoked_asterisk: Run the web app
+- Create a Visual Studio project
+- Create a C# ASP.NET Core web app
+- Explore IDE features
+- Run the web app
 
 ## Projects
-- :arrow_right: src/MyFirstProject.WebApp
-- :arrow_right: src/MyFirstProject.WebApi
-- :arrow_right: src/MyFirstProject.Tests
+- src/MyFirstProject.WebApp
+- src/MyFirstProject.WebApi
+- src/MyFirstProject.Tests
 
 ## Build Process
 
