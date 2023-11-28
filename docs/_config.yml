@@ -1,3 +1,4 @@
+theme: jekyll-theme-minimal
 lsi: false
 safe: true
 source: dotnetcore-webapp/docs
