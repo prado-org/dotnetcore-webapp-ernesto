@@ -13,7 +13,13 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
 
-      - name: Run a multi-line script
+      - name: Secrets
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          echo Secrets
+          echo $REPO_MY_SECRET
+          echo $ORG_MY_SECRET
+      - name: Variables
+        run: |
+          echo Variables
+          echo $REPO_MY_VARIABLE
+          echo $ORG_MY_VARIABLE
