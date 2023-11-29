@@ -16,16 +16,11 @@ jobs:
       - name: Secrets
         run: |
           echo Secrets
-          echo $REPO_MY_SECRET
-          echo $ORG_MY_SECRET
           echo ${{ secrets.REPO_MY_SECRET }}
           echo ${{ secrets.ORG_MY_SECRET }}
            
       - name: Variables
         run: |
           echo Variables
-          echo $REPO_MY_VARIABLE
-          echo $ORG_MY_VARIABLE
           echo ${{ vars.REPO_MY_VARIABLE }}
           echo ${{ vars.ORG_MY_VARIABLE }}
-          
