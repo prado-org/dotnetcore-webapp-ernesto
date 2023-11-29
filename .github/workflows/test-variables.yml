@@ -18,8 +18,8 @@ jobs:
           echo Secrets
           echo $REPO_MY_SECRET
           echo $ORG_MY_SECRET
-          echo ${{ vars.REPO_MY_SECRET }}
-          echo ${{ vars.ORG_MY_SECRET }}
+          echo ${{ secrets.REPO_MY_SECRET }}
+          echo ${{ secrets.ORG_MY_SECRET }}
            
       - name: Variables
         run: |
