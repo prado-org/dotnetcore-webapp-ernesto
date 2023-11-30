@@ -16,14 +16,15 @@ namespace MyFirstProject.WebApi.Controllers
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
-            // feature 01
-            // feature 02
+            // treinamento github developer
+            // outro comentario
             _logger = logger;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            //outro comentário do treianmento
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
