@@ -17,6 +17,7 @@ namespace MyFirstProject.WebApi.Controllers
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             // treinamento github developer
+            // outro comentario
             _logger = logger;
         }
 
