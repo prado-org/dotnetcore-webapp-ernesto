@@ -1,7 +1,7 @@
 CODEOWNERS  @leandromsft
 
 # Workflow folder
-.github/workflows/    @leandromsft
+/.github/workflows/    @leandromsft
 
 # IAC folder
 iac/  @leandro-infra01
