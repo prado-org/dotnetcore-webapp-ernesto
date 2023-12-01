@@ -8,6 +8,9 @@ This tutorial shows you how to:
 - Explore IDE features
 - Run the web app
 
+## Teste Treinamento
+Teste
+
 ## Projects
 - src/MyFirstProject.WebApp
 - src/MyFirstProject.WebApi
