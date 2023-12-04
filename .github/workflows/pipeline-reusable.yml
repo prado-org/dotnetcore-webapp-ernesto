@@ -16,7 +16,7 @@ jobs:
   reusable-dotnet-build:
     uses: prado-org/reusable-workflows/.github/workflows/build-dotnet-core.yml@main
     with:
-      configuration: 'Teste Leandro Prado'
+      configuration: 'Release'
       path-csproj: 'src/MyFirstProject.sln'
       runner-name: 'ubuntu-latest'
   build:
