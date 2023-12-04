@@ -8,36 +8,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  reusable-example-workflow:
+  example-workflow:
     uses: prado-org/reusable-workflows/.github/workflows/example.yml@main
     with:
       msg: 'Teste Leandro Prado'
       runner-name: 'ubuntu-latest'
   
-  reusable-dotnet-build:
+  dotnet-build:
     uses: prado-org/reusable-workflows/.github/workflows/build-dotnet-core.yml@main
     with:
       configuration: 'Release'
       path-csproj: 'src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj'
       runner-name: 'ubuntu-latest'
   
-  reusable-deploy-azure-webapp:
+  deploy-azure-webapp-dev:
     uses: prado-org/reusable-workflows/.github/workflows/deploy-azure-webapp.yml@main
-    needs: reusable-dotnet-build
+    needs: dotnet-build
     with:
       runner-name: 'ubuntu-latest'
-      webapp-name: 'my-first-project-webapp'
+      webapp-name: 'app-MyFirstProject-dev'
     secrets: inherit
   
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+  deploy-azure-webapp-prd:
+    uses: prado-org/reusable-workflows/.github/workflows/deploy-azure-webapp.yml@main
+    needs: deploy-azure-webapp-dev
+    with:
+      runner-name: 'ubuntu-latest'
+      webapp-name: 'app-MyFirstProject-prd'
+    secrets: inherit
