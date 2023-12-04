@@ -13,12 +13,14 @@ jobs:
     with:
       msg: 'Teste Leandro Prado'
       runner-name: 'ubuntu-latest'
+  
   reusable-dotnet-build:
     uses: prado-org/reusable-workflows/.github/workflows/build-dotnet-core.yml@main
     with:
       configuration: 'Release'
-      path-csproj: 'src/MyFirstProject.sln'
+      path-csproj: 'src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj'
       runner-name: 'ubuntu-latest'
+  
   build:
     runs-on: ubuntu-latest
     steps:
