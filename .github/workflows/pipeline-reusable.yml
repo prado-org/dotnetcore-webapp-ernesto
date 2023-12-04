@@ -27,6 +27,7 @@ jobs:
     with:
       runner-name: 'ubuntu-latest'
       webapp-name: 'my-first-project-webapp'
+    secrets: inherit
   
   build:
     runs-on: ubuntu-latest
