@@ -11,5 +11,5 @@ jobs:
   start-workflow:
     uses: prado-org/reusable-workflows/.github/workflows/start.yml@main
     with:
-      language: 'dotnet'
+      language: 'csharp'
       runner-name: 'ubuntu-latest'
