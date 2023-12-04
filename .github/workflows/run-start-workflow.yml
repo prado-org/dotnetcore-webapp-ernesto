@@ -9,7 +9,7 @@ on:
 
 jobs:
   start-workflow:
-    uses: prado-org/reusable-workflows/.github/workflows/start.yml@main
+    uses: prado-org/reusable-workflows/.github/workflows/start-dotnet.yml@main
     with:
-      language: 'csharp'
       runner-name: 'ubuntu-latest'
+      path-csproj: 'src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj'
