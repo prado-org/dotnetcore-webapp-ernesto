@@ -20,7 +20,11 @@ jobs:
       configuration: 'Release'
       path-csproj: 'src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj'
       runner-name: 'ubuntu-latest'
-  
+  reusable-deploy-azure-webapp:
+    uses: prado-org/reusable-workflows/.github/workflows/deploy-azure-webapp.yml@main
+    with:
+      runner-name: 'ubuntu-latest'
+      webapp-name: 'my-first-project-webapp'
   build:
     runs-on: ubuntu-latest
     steps:
