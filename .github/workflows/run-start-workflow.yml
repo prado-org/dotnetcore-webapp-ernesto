@@ -1,0 +1,15 @@
+name: run-start-workflow
+
+on:
+  #push:
+  #  branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  start-workflow:
+    uses: prado-org/reusable-workflows/.github/workflows/start.yml@main
+    with:
+      language: 'dotnet'
+      runner-name: 'ubuntu-latest'
