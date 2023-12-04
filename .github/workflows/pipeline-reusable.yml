@@ -9,7 +9,7 @@ on:
 
 jobs:
   reusable-build-workflow:
-    uses: reusable-workflows/.github/workflows/example.yml@main
+    uses: prado-org/reusable-workflows/.github/workflows/example.yml@main
     with:
       msg: 'Teste Leandro Prado'
       runner-name: 'ubuntu-latest'
