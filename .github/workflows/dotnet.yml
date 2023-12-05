@@ -75,6 +75,7 @@ jobs:
       - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
+          resource-group-name: rg-dotnetproject-dev
           app-name: api-dotnetproject-dev
           package: api-artifact
         
@@ -99,6 +100,7 @@ jobs:
       - name: Deploy APP
         uses: azure/webapps-deploy@v3
         with:
+          resource-group-name: rg-dotnetproject-dev
           app-name: app-dotnetproject-dev
           package: app-artifact
   Hml:
@@ -120,6 +122,7 @@ jobs:
       - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
+          resource-group-name: rg-dotnetproject-hml
           app-name: api-dotnetproject-hml
           package: api-artifact
         
@@ -144,6 +147,7 @@ jobs:
       - name: Deploy APP
         uses: azure/webapps-deploy@v3
         with:
+          resource-group-name: rg-dotnetproject-hml
           app-name: app-dotnetproject-hml
           package: app-artifact
 
@@ -166,6 +170,7 @@ jobs:
       - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
+          resource-group-name: rg-dotnetproject-prd
           app-name: api-dotnetproject-prd
           package: api-artifact
         
@@ -190,5 +195,6 @@ jobs:
       - name: Deploy APP
         uses: azure/webapps-deploy@v3
         with:
+          resource-group-name: rg-dotnetproject-prd
           app-name: app-dotnetproject-prd
           package: app-artifact
