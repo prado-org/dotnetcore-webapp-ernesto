@@ -75,13 +75,13 @@ jobs:
       - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
-          app-name: api-myfirstproject-dev
+          app-name: api-dotnetproject-dev
           package: api-artifact
         
       - name: Set APP Settings
         uses: Azure/appservice-settings@v1
         with:
-          app-name: app-myfirstproject-dev
+          app-name: app-dotnetproject-dev
           app-settings-json: |
             [
               {
@@ -99,7 +99,7 @@ jobs:
       - name: Deploy APP
         uses: azure/webapps-deploy@v3
         with:
-          app-name: app-myfirstproject-dev
+          app-name: app-dotnetproject-dev
           package: app-artifact
   Hml:
     needs: Dev
@@ -120,13 +120,13 @@ jobs:
       - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
-          app-name: api-myfirstproject-hml
+          app-name: api-dotnetproject-hml
           package: api-artifact
         
       - name: Set APP Settings
         uses: Azure/appservice-settings@v1
         with:
-          app-name: app-myfirstproject-hml
+          app-name: app-dotnetproject-hml
           app-settings-json: |
             [
               {
@@ -144,7 +144,7 @@ jobs:
       - name: Deploy APP
         uses: azure/webapps-deploy@v3
         with:
-          app-name: app-myfirstproject-hml
+          app-name: app-dotnetproject-hml
           package: app-artifact
 
   Prd:
@@ -166,13 +166,13 @@ jobs:
       - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
-          app-name: api-myfirstproject-prd
+          app-name: api-dotnetproject-prd
           package: api-artifact
         
       - name: Set APP Settings
         uses: Azure/appservice-settings@v1
         with:
-          app-name: app-myfirstproject-prd
+          app-name: app-dotnetproject-prd
           app-settings-json: |
             [
               {
@@ -190,5 +190,5 @@ jobs:
       - name: Deploy APP
         uses: azure/webapps-deploy@v3
         with:
-          app-name: app-myfirstproject-prd
+          app-name: app-dotnetproject-prd
           package: app-artifact
