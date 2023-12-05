@@ -17,7 +17,6 @@ namespace MyFirstProject.WebApp.Controllers
 
         public IActionResult Index()
         {
-            // outro teste
             return View();
         }
 
