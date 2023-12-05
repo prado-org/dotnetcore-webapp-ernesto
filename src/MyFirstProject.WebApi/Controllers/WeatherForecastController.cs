@@ -37,8 +37,6 @@ namespace MyFirstProject.WebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, WeatherForecast item)
         {
-            // outra alterção do DEV 02
-            // teste de merge/conflito
             try
             {
                 _logger.LogInformation("Method - PutTodoItem");
