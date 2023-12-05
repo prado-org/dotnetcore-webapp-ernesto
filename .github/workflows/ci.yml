@@ -2,7 +2,7 @@ name: dotnetcore-webapp-ci
 
 on:
   push:
-    branches: [ "features/*" ]
+    branches: [ "main" ]
     paths-ignore:
       - 'docs/**'
   pull_request:

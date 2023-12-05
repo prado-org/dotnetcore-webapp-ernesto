@@ -1,6 +1,3 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
 name: dotnetcore-webapp-ci-cd
 
 on:
@@ -12,42 +9,9 @@ on:
 
 env:
   CONFIGURATION: Release
-  AZ_LOCATION: eastus
-  AZ_APP_NAME: MyFirstProject
   
 jobs:
-  Infra:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    - name: Create environment dev
-      uses: Azure/arm-deploy@v1
-      with:
-        scope: subscription
-        region: ${{ env.AZ_LOCATION }}
-        template: iac/main.bicep
-        deploymentMode: Incremental
-        deploymentName: 'gh-actions'
-        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev
-    
-    - name: Create environment prd
-      uses: Azure/arm-deploy@v1
-      with:
-        scope: subscription
-        region: ${{ env.AZ_LOCATION }}
-        template: iac/main.bicep
-        deploymentMode: Incremental
-        deploymentName: 'gh-actions'
-        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=prd
-
   Build:
-    needs: Infra
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -137,8 +101,54 @@ jobs:
         with:
           app-name: app-myfirstproject-dev
           package: app-artifact
-  Prd:
+  Hml:
     needs: Dev
+    runs-on: ubuntu-latest
+    environment: hml
+    steps:
+      - uses: actions/download-artifact@v3
+      
+      - name: Set version date
+        run: |
+          echo "APP_VERSION_DATE=$(date +'%d/%m/%Y %H:%M:%S')" >> $GITHUB_ENV
+          
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Deploy API
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: api-myfirstproject-hml
+          package: api-artifact
+        
+      - name: Set APP Settings
+        uses: Azure/appservice-settings@v1
+        with:
+          app-name: app-myfirstproject-hml
+          app-settings-json: |
+            [
+              {
+                "name": "VersionInfo__Number",
+                "value": "1.0.${{ github.run_number }}",
+                "slotSetting": false
+              },
+              {
+                "name": "VersionInfo__Date",
+                "value": "${{ env.APP_VERSION_DATE }}",
+                "slotSetting": false
+              }
+            ]
+
+      - name: Deploy APP
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: app-myfirstproject-hml
+          package: app-artifact
+
+  Prd:
+    needs: Hml
     runs-on: ubuntu-latest
     environment: prd
     steps:

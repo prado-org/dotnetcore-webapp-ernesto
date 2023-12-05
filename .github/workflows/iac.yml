@@ -1,0 +1,55 @@
+name: iac
+
+on:
+  #push:
+  #  branches: [ "main" ]
+  #  paths:
+  #    - 'iac/**'
+  #pull_request:
+  #  branches: [ "main" ]
+  workflow_dispatch:  
+
+env:
+  AZ_LOCATION: eastus
+  AZ_APP_NAME: dotnetproject
+  
+jobs:
+  Infra:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Create environment dev
+      uses: Azure/arm-deploy@v1
+      with:
+        scope: subscription
+        region: ${{ env.AZ_LOCATION }}
+        template: iac/main.bicep
+        deploymentMode: Incremental
+        deploymentName: 'gh-actions'
+        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev
+    
+    - name: Create environment hml
+      uses: Azure/arm-deploy@v1
+      with:
+        scope: subscription
+        region: ${{ env.AZ_LOCATION }}
+        template: iac/main.bicep
+        deploymentMode: Incremental
+        deploymentName: 'gh-actions'
+        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=hml
+    
+    - name: Create environment prd
+      uses: Azure/arm-deploy@v1
+      with:
+        scope: subscription
+        region: ${{ env.AZ_LOCATION }}
+        template: iac/main.bicep
+        deploymentMode: Incremental
+        deploymentName: 'gh-actions'
+        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=prd
