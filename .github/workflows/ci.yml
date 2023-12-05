@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
     paths-ignore:
       - 'docs/**'
+      - '.github/**'
   pull_request:
     branches: [ "main" ]
   # Allows you to run this workflow manually from the Actions tab
@@ -40,21 +41,3 @@ jobs:
         name: UnitTests
         path: src/MyFirstProject.Tests/TestResults/*.trx
         reporter: dotnet-trx
-        
-    - name: Publish APP
-      run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApp
-
-    - name: Publish API
-      run: dotnet publish src/MyFirstProject.WebApi/MyFirstProject.WebApi.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApi
-
-    - name: Upload APP Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: app-artifact
-        path: PublishApp
-    
-    - name: Upload API Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: api-artifact
-        path: PublishApi
