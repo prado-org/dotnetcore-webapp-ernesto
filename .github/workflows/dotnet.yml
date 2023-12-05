@@ -17,6 +17,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
+    - name: Dump GitHub context
+      run: echo '${{ toJson(github) }}'
+    
+    - name: Dump runner context
+      run: echo '${{ toJson(runner) }}'
+
     - name: Show variables
       run: |
         echo "GITHUB_REF: $GITHUB_REF"
@@ -24,8 +30,6 @@ jobs:
         echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
         echo "GITHUB_ACTOR: $GITHUB_ACTOR"
         echo "GITHUB_WORKFLOW: $GITHUB_WORKFLOW"
-        echo "GITHUB_HEAD_REF: $GITHUB_HEAD_REF"
-        echo "GITHUB_BASE_REF: $GITHUB_BASE_REF"
         echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
         echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
         echo "GITHUB_ACTION: $GITHUB_ACTION"
@@ -35,7 +39,6 @@ jobs:
         echo "RUNNER_TEMP: $RUNNER_TEMP"
         echo "RUNNER_WORKSPACE: $RUNNER_WORKSPACE"
         echo "ACTIONS_RUNTIME_URL: $ACTIONS_RUNTIME_URL"
-        
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
@@ -128,7 +131,7 @@ jobs:
     needs: Dev
     runs-on: ubuntu-latest
     environment: hml
-    if: ${{ startsWith(github.ref, 'refs/release/') }}
+    if: ${{ startsWith(github.ref, 'refs/heads/release/') }}
     steps:
       - uses: actions/download-artifact@v3
       
