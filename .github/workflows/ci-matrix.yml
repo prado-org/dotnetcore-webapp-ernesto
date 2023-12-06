@@ -1,4 +1,4 @@
-name: dotnetcore-webapp-ci
+name: dotnetcore-matrix
 
 on:
   #push:
