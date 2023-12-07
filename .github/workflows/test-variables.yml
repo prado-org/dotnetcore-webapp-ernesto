@@ -31,3 +31,4 @@ jobs:
           echo Variables
           echo ${{ vars.REPO_MY_VARIABLE }}
           echo ${{ vars.ORG_MY_VARIABLE }}
+          echo ${{ vars.MINHA_VARIAVEL }}
