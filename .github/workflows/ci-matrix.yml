@@ -35,3 +35,15 @@ jobs:
     
     - name: Test
       run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal --logger "trx;LogFileName=test-results.trx"
+    
+    - name: Publish APP
+      run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output ${{ matrix.dotnet-version }}/PublishApp
+
+    - name: Publish API
+      run: dotnet publish src/MyFirstProject.WebApi/MyFirstProject.WebApi.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output ${{ matrix.dotnet-version }}/PublishApi
+
+    - name: Upload APP Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifact_${{ matrix.dotnet-version }}
+        path: ${{ matrix.dotnet-version }}
