@@ -10,6 +10,7 @@ namespace MyFirstProject.WebApi
 
         public AzureBlobStorage()
         {
+            //teste
             string connectionString = "+LXpHumptdfyu/45QHCIPT1YsbyAoMNAwI0lIgjPFuJEl2LyflvnIvLHbjJxb73X7x7thzAcdyHE+AStjy9ClA==";
             string containerName = "myfirstproject";
             _containerClient = new BlobContainerClient(connectionString, containerName);
