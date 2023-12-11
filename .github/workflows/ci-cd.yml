@@ -6,8 +6,12 @@ on:
       - feature/*
       - release/*
   pull_request:
+    types:
+      - opened
+      - closed
     branches:
       - develop
+      - main
 
 env:
   CONFIGURATION: Release
