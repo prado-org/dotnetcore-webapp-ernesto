@@ -90,7 +90,9 @@ jobs:
   Dev:
     needs: Build
     runs-on: ubuntu-latest
-    environment: dev
+    environment:
+      name: dev
+      url: https://app-dotnetproject-dev.azurewebsites.net
     if: ${{ github.ref == 'refs/heads/develop' }}
     steps:
       - uses: actions/download-artifact@v3
