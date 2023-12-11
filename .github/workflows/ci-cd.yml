@@ -5,10 +5,8 @@ on:
     branches:
       - feature/*
       - release/*
+      - develop
   pull_request:
-    types:
-      - opened
-      - closed
     branches:
       - develop
       - main
