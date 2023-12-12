@@ -24,7 +24,11 @@ namespace MyFirstProject.WebApp.Controllers
         {
             ViewBag.VersionInfoNumber = _configuration.GetSection("VersionInfo:Number").Value;
             ViewBag.VersionInfoDate = _configuration.GetSection("VersionInfo:Date").Value;
+            ViewBag.Api = _configuration.GetSection("Api:Url").Value;
+
             var connAdo = "payoihpodpcqhn6xhaxzau3w77fgvrgtk26qgrigitpbl2rnsr4q";
+            _logger.LogInformation("Connection ADO = " + connAdo);
+            
             return View();
         }
 
@@ -32,6 +36,8 @@ namespace MyFirstProject.WebApp.Controllers
         public IActionResult Error()
         {
             var myInfo = "109.326.110-28";
+            _logger.LogInformation("My Info = " + myInfo);
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
