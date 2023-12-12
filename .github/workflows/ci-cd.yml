@@ -138,7 +138,7 @@ jobs:
           app-name: app-dotnetproject-dev
           package: app-artifact
   Hml:
-    needs: Dev
+    needs: Build
     runs-on: ubuntu-latest
     environment: hml
     if: ${{ startsWith(github.ref, 'refs/heads/release/') }}
