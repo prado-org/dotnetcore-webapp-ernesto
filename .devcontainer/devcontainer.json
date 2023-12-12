@@ -30,7 +30,8 @@
 		  // Add the IDs of extensions you want installed when the container is created.
 		  "extensions": [
 			"streetsidesoftware.code-spell-checker",
-			"vscode-icons-team.vscode-icons"
+			"vscode-icons-team.vscode-icons",
+			"ms-dotnettools.csdevkit"
 		  ]
 		}
 	  }
