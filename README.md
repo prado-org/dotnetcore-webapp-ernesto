@@ -34,6 +34,30 @@ dotnet publish src/MyFirstProject.WebApi/MyFirstProject.WebApi.csproj --no-build
 
 ```
 
+## Docker image
+    
+To build and run your Docker image, you can use the following commands:
+
+```
+# Build Docker images
+cd .\src\MyFirstProject.WebApp\
+docker build -t myfirstproject.webapp .
+
+cd .\src\MyFirstProject.WebApi\
+docker build -t myfirstproject.webapi .
+
+# List images
+docker images
+
+# Run docker compose
+cd .\src
+docker-compose -f 'DockerCompose.yml' up --build -d
+
+# List containers running
+docker ps -a
+```
+
+
 ## Contribute
 
 Contributions are always welcome!
