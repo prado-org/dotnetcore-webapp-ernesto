@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  myfirstproject-webapp:
+    container_name: myfirstproject-webapp
+    image: myfirstproject.webapp
+    build:
+      context: MyFirstProject.WebApp
+      dockerfile: Dockerfile
+    environment:
+      - Api__Url=http://myfirstproject-webapi
+    ports:
+      - 7171:80
+    links:
+      - myfirstproject-webapi
+    depends_on:
+      - myfirstproject-webapi
+  myfirstproject-webapi:
+    container_name: myfirstproject-webapi
+    image: myfirstproject.webapi
+    build:
+      context: MyFirstProject.WebApi
+      dockerfile: Dockerfile
+    ports:
+      - 7272:80
