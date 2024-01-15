@@ -1,6 +1,7 @@
 param webAppName string
 param location string
 param environment string
+param acrName string
 
 targetScope = 'subscription'
 
@@ -38,5 +39,25 @@ module webApi './webApp.bicep' = {
     webAppName: 'api-${webAppName}-${environment}'
     location: location
     linuxFxVersion: 'DOTNETCORE|6.0'
+  }
+}
+
+module aks './kubernetes.bicep' = {
+  name: 'aks'
+  scope: rg
+  params: {
+    clusterName: 'aks-${webAppName}-${environment}'
+    location: location
+    dnsPrefix: 'aks-${webAppName}-${environment}'
+    agentCount: 1
+  }
+}
+
+module aksRoleAssigment './aksRoleAssignments.bicep' = {
+  name: 'aksRoleAssigment'
+  scope: rg
+  params: {
+    acrName: acrName
+    aksPrincipalId: aks.outputs.principalId
   }
 }

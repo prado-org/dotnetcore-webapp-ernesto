@@ -8,7 +8,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module acr './ContainerRegistry.bicep' = {
+module acr './containerRegistry.bicep' = {
   name: 'acr'
   scope: rg
   params: {
