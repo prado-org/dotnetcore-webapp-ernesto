@@ -53,3 +53,13 @@ jobs:
         deploymentMode: Incremental
         deploymentName: 'gh-actions'
         parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=prd
+    
+    - name: Create acr
+      uses: Azure/arm-deploy@v1
+      with:
+        scope: subscription
+        region: ${{ env.AZ_LOCATION }}
+        template: iac/main-acr.bicep
+        deploymentMode: Incremental
+        deploymentName: 'gh-actions'
+        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }}
