@@ -40,3 +40,13 @@ module webApi './webApp.bicep' = {
     linuxFxVersion: 'DOTNETCORE|6.0'
   }
 }
+
+module acr './ContainerRegistry.bicep' = {
+  name: 'acr'
+  scope: rg
+  params: {
+    acrName: 'acr-${webAppName}-${environment}'
+    location: location
+    
+  }
+}
