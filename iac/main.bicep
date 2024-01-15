@@ -10,6 +10,10 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
+resource rgAcr 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
+  name: 'rg-${acrName}'
+}
+
 module servicePlan './servicePlan.bicep' = {
   name: 'servicePlanModule'
   scope: rg
@@ -56,7 +60,7 @@ module aks './kubernetes.bicep' = {
 
 module aksRoleAssigment './aksRoleAssignments.bicep' = {
   name: 'aksRoleAssigment'
-  scope: rg
+  scope: rgAcr
   params: {
     acrName: acrName
     aksPrincipalId: aks.outputs.principalId

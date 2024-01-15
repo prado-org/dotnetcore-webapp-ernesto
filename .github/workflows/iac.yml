@@ -24,6 +24,16 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
+    - name: Create acr
+      uses: Azure/arm-deploy@v1
+      with:
+        scope: subscription
+        region: ${{ env.AZ_LOCATION }}
+        template: iac/main-acr.bicep
+        deploymentMode: Incremental
+        deploymentName: 'gh-actions'
+        parameters: acrName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }}
+
     - name: Create environment dev
       uses: Azure/arm-deploy@v1
       with:
@@ -32,7 +42,7 @@ jobs:
         template: iac/main.bicep
         deploymentMode: Incremental
         deploymentName: 'gh-actions'
-        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev acrName=acr${{ env.AZ_APP_NAME }}
+        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev acrName=${{ env.AZ_APP_NAME }}
     
     - name: Create environment hml
       uses: Azure/arm-deploy@v1
@@ -53,13 +63,3 @@ jobs:
         deploymentMode: Incremental
         deploymentName: 'gh-actions'
         parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=prd
-    
-    - name: Create acr
-      uses: Azure/arm-deploy@v1
-      with:
-        scope: subscription
-        region: ${{ env.AZ_LOCATION }}
-        template: iac/main-acr.bicep
-        deploymentMode: Incremental
-        deploymentName: 'gh-actions'
-        parameters: acrName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }}
