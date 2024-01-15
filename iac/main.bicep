@@ -45,7 +45,7 @@ module acr './ContainerRegistry.bicep' = {
   name: 'acr'
   scope: rg
   params: {
-    acrName: format('acr{0}{1}', webAppName, environment)
+    acrName: format('acr{0}', webAppName)
     location: location
   }
 }
