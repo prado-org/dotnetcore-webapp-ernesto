@@ -32,7 +32,7 @@ jobs:
         template: iac/main.bicep
         deploymentMode: Incremental
         deploymentName: 'gh-actions'
-        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev
+        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev acrName=acr${{ env.AZ_APP_NAME }}
     
     - name: Create environment hml
       uses: Azure/arm-deploy@v1
@@ -62,4 +62,4 @@ jobs:
         template: iac/main-acr.bicep
         deploymentMode: Incremental
         deploymentName: 'gh-actions'
-        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }}
+        parameters: acrName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }}

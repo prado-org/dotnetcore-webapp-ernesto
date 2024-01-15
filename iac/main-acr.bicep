@@ -1,10 +1,10 @@
-param webAppName string
+param acrName string
 param location string
 
 targetScope = 'subscription'
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: 'rg-${webAppName}'
+  name: 'rg-${acrName}'
   location: location
 }
 
@@ -12,7 +12,7 @@ module acr './containerRegistry.bicep' = {
   name: 'acr'
   scope: rg
   params: {
-    acrName: format('acr{0}', webAppName)
+    acrName: format('acr{0}', acrName)
     location: location
   }
 }
