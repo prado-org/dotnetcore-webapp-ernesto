@@ -1,4 +1,4 @@
-name: iac
+name: dotnetcore-webapp-iac
 
 on:
   #push:
