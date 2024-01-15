@@ -1,0 +1,43 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: myfirstproject-api-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: myfirstproject-api
+    tier: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myfirstproject-api-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myfirstproject-api
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: myfirstproject-api
+        tier: frontend
+    spec:
+      containers:
+        - name: myfirstproject-api
+          image: "_ImageUrlApp_"
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "128Mi"
