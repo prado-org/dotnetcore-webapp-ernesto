@@ -62,7 +62,7 @@ module aksRoleAssigment './aksRoleAssignments.bicep' = {
   name: 'aksRoleAssigment'
   scope: rgAcr
   params: {
-    acrName: acrName
+    acrName: format('acr{0}', acrName)
     aksPrincipalId: aks.outputs.principalId
   }
 }
