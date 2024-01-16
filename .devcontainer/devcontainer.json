@@ -22,8 +22,8 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	//"postCreateCommand": ["dotnet restore src/MyFirstProject.sln"],
-	"postCreateCommand": "./.devcontainer/postCreateCommand.sh",
-
+	"postCreateCommand": ".devcontainer/postCreateCommand.sh",
+	
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
