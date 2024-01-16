@@ -21,7 +21,7 @@
 	// }
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "dotnet restore",
+	"postCreateCommand": ["dotnet restore src/MyFirstProject.sln", "dotnet build src/MyFirstProject.sln", "dotnet dev-certs https"],
 
 	// Configure tool-specific properties.
 	"customizations": {
