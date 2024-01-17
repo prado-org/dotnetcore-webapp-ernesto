@@ -63,7 +63,7 @@ jobs:
   k8s-dev:
     runs-on: ubuntu-latest
     needs: build-docker
-    environment: prd
+    environment: k8s-dev
     steps:
     # Download k8s artifact
     - name: Download k8s artifact
