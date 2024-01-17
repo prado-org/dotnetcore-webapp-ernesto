@@ -16,7 +16,7 @@ env:
   CONFIGURATION: Release
   
 jobs:
-  Build-Docker:
+  build-docker:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -59,3 +59,38 @@ jobs:
         path: |
           src/MyFirstProject.WebApi/k8s-deployment.yaml
           src/MyFirstProject.WebApp/k8s-deployment.yaml
+  
+  k8s-dev:
+    runs-on: ubuntu-latest
+    needs: Build-Docker
+    environment: prd
+    steps:
+    # Download k8s artifact
+    - name: Download k8s artifact
+      uses: actions/download-artifact@v3.0.0
+      with:
+        name: k8s
+        path: k8s-artifact
+
+    # Log into Azure
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Set the target Azure Kubernetes Service (AKS) cluster. 
+    - name: Deploy set context
+      uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ env.AZ_AKS_NAME }}
+        resource-group: ${{ env.AZ_RG_NAME }}
+
+    # Deploy app to AKS
+    - name: Deploy to k8s
+      uses: azure/k8s-deploy@v1
+      with:
+        namespace: default
+        manifests: |
+          k8s-artifact/MyFirstProject.WebApi/k8s-deployment.yaml
+          k8s-artifact/MyFirstProject.WebApp/k8s-deployment.yaml
