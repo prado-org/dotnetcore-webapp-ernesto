@@ -13,7 +13,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// removido por causa do Codespaces
+//app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
