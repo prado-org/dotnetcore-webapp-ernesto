@@ -7,6 +7,7 @@ services:
       - ../..:/workspaces:cached
     network_mode: service:myfirstproject-webapp
     command: sleep infinity
+  
   myfirstproject-webapp:
     container_name: myfirstproject-webapp
     image: myfirstproject.webapp
@@ -21,6 +22,7 @@ services:
       - myfirstproject-webapi
     depends_on:
       - myfirstproject-webapi
+  
   myfirstproject-webapi:
     container_name: myfirstproject-webapi
     image: myfirstproject.webapi
