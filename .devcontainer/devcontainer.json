@@ -6,7 +6,7 @@
 	//"image": "mcr.microsoft.com/devcontainers/dotnet:1-6.0",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "devcontainer",
-	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	
 	"features": {
 		"ghcr.io/devcontainers/features/azure-cli:1": {},
