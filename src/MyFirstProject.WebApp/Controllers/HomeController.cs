@@ -17,11 +17,14 @@ namespace MyFirstProject.WebApp.Controllers
 
         public IActionResult Index()
         {
+            _logger.LogInformation("Index Page");
             return View();
         }
 
         public IActionResult Privacy()
         {
+            _logger.LogInformation("Privacy Page");
+
             ViewBag.VersionInfoNumber = _configuration.GetSection("VersionInfo:Number").Value;
             ViewBag.VersionInfoDate = _configuration.GetSection("VersionInfo:Date").Value;
             ViewBag.Api = _configuration.GetSection("Api:Url").Value;
@@ -35,6 +38,8 @@ namespace MyFirstProject.WebApp.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            _logger.LogInformation("Error Page");
+            
             var myInfo = "109.326.110-28";
             _logger.LogInformation("My Info = " + myInfo);
 
