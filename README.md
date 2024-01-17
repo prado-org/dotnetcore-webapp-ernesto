@@ -9,6 +9,13 @@ This tutorial shows you how to:
 - :eight_spoked_asterisk: Explore IDE features
 - :eight_spoked_asterisk: Run the web app
 
+## Status
+[![dotnetcore-webapp-ci-cd](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/ci-cd.yml)
+
+[![dotnetcore-webapp-iac](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/iac.yml/badge.svg)](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/iac.yml)
+
+[![dotnetcore-webapp-ci-cd-docker](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/ci-cd-docker.yml/badge.svg)](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/ci-cd-docker.yml)
+
 ## Projects
 - :arrow_right: src/MyFirstProject.WebApp
 - :arrow_right: src/MyFirstProject.WebApi
