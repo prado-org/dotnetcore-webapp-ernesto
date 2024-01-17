@@ -91,7 +91,7 @@ jobs:
     needs: Build
     runs-on: ubuntu-latest
     environment:
-      name: dev
+      name: webapp-dev
       url: https://app-dotnetproject-dev.azurewebsites.net
     if: ${{ github.ref == 'refs/heads/develop' }}
     steps:
@@ -141,7 +141,7 @@ jobs:
   Hml:
     needs: Build
     runs-on: ubuntu-latest
-    environment: hml
+    environment: webapp-hml
     if: ${{ startsWith(github.ref, 'refs/heads/release/') }}
     steps:
       - uses: actions/download-artifact@v3
@@ -190,7 +190,7 @@ jobs:
   Prd:
     needs: Hml
     runs-on: ubuntu-latest
-    environment: prd
+    environment: webapp-prd
     steps:
       - uses: actions/download-artifact@v3
       
