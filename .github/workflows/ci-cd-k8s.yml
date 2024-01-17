@@ -153,14 +153,25 @@ jobs:
         cluster-name: ${{ vars.AZ_AKS_NAME }}
         resource-group: ${{ vars.AZ_RG_NAME }}
 
-    # Deploy app to AKS
-    - name: Deploy to k8s
+    # Deploy api to AKS
+    - name: Deploy WebApi to k8s
       uses: azure/k8s-deploy@v1
       with:
         namespace: default
         manifests: |
           k8s-artifact/MyFirstProject.WebApi/k8s-deployment.yaml
+        images: |
+          ${{ vars.ACR_URL }}/myfirstproject.webapi:${{ GITHUB.RUN_NUMBER }}
+    
+    # Deploy app to AKS
+    - name: Deploy WebApp to k8s
+      uses: azure/k8s-deploy@v1
+      with:
+        namespace: default
+        manifests: |
           k8s-artifact/MyFirstProject.WebApp/k8s-deployment.yaml
+        images: |
+          ${{ vars.ACR_URL }}/myfirstproject.webapp:${{ GITHUB.RUN_NUMBER }}
   
   k8s-prd:
     runs-on: ubuntu-latest
@@ -196,4 +207,6 @@ jobs:
         manifests: |
           k8s-artifact/MyFirstProject.WebApi/k8s-deployment.yaml
           k8s-artifact/MyFirstProject.WebApp/k8s-deployment.yaml
-        
+        images: |
+          ${{ vars.ACR_URL }}/myfirstproject.webapi:${{ GITHUB.RUN_NUMBER }}
+          ${{ vars.ACR_URL }}/myfirstproject.webapp:${{ GITHUB.RUN_NUMBER }}
