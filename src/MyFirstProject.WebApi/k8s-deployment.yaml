@@ -2,11 +2,13 @@ kind: Service
 apiVersion: v1
 metadata:
   name: myfirstproject-api-svc
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 spec:
   type: LoadBalancer
   selector:
     app: myfirstproject-api
-    tier: frontend
+    tier: backend
   ports:
     - protocol: TCP
       port: 80
@@ -21,12 +23,12 @@ spec:
   selector:
     matchLabels:
       app: myfirstproject-api
-      tier: frontend
+      tier: backend
   template:
     metadata:
       labels:
         app: myfirstproject-api
-        tier: frontend
+        tier: backend
     spec:
       containers:
         - name: myfirstproject-api
