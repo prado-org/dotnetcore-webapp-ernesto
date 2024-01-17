@@ -94,3 +94,73 @@ jobs:
         manifests: |
           k8s-artifact/MyFirstProject.WebApi/k8s-deployment.yaml
           k8s-artifact/MyFirstProject.WebApp/k8s-deployment.yaml
+
+  k8s-hml:
+    runs-on: ubuntu-latest
+    needs: k8s-dev
+    environment: k8s-hml
+    steps:
+    # Download k8s artifact
+    - name: Download k8s artifact
+      uses: actions/download-artifact@v3.0.0
+      with:
+        name: k8s
+        path: k8s-artifact
+
+    # Log into Azure
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Set the target Azure Kubernetes Service (AKS) cluster. 
+    - name: Deploy set context
+      uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ vars.AZ_AKS_NAME }}
+        resource-group: ${{ vars.AZ_RG_NAME }}
+
+    # Deploy app to AKS
+    - name: Deploy to k8s
+      uses: azure/k8s-deploy@v1
+      with:
+        namespace: default
+        manifests: |
+          k8s-artifact/MyFirstProject.WebApi/k8s-deployment.yaml
+          k8s-artifact/MyFirstProject.WebApp/k8s-deployment.yaml
+  k8s-prd:
+    runs-on: ubuntu-latest
+    needs: k8s-hml
+    environment: k8s-prd
+    steps:
+    # Download k8s artifact
+    - name: Download k8s artifact
+      uses: actions/download-artifact@v3.0.0
+      with:
+        name: k8s
+        path: k8s-artifact
+
+    # Log into Azure
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Set the target Azure Kubernetes Service (AKS) cluster. 
+    - name: Deploy set context
+      uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ vars.AZ_AKS_NAME }}
+        resource-group: ${{ vars.AZ_RG_NAME }}
+
+    # Deploy app to AKS
+    - name: Deploy to k8s
+      uses: azure/k8s-deploy@v1
+      with:
+        namespace: default
+        manifests: |
+          k8s-artifact/MyFirstProject.WebApi/k8s-deployment.yaml
+          k8s-artifact/MyFirstProject.WebApp/k8s-deployment.yaml
+        
