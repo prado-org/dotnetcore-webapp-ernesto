@@ -1,4 +1,4 @@
-name: dotnetcore-webapp-ci-cd-docker
+name: dotnetcore-webapp-ci-cd-k8s
 
 on:
   #push:
