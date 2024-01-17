@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: myfirstproject-api
-          image: "_ImageUrlApp_"
+          image: "acrdotnetproject.azurecr.io/myfirstproject.webapi:latest"
           ports:
             - name: http
               containerPort: 80

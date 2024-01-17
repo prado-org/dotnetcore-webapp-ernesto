@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: myfirstproject-app
-          image: "_ImageUrlApp_"
+          image: "acrdotnetproject.azurecr.io/myfirstproject.webapp:latest"
           env:
             - name: Api__Url
               value: "http://myfirstproject-api-svc.default.svc.cluster.local"
