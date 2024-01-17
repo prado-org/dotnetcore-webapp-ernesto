@@ -11,7 +11,7 @@ services:
     container_name: myfirstproject-webapp
     image: myfirstproject.webapp
     build:
-      context: MyFirstProject.WebApp
+      context: ../src/MyFirstProject.WebApp
       dockerfile: Dockerfile
     environment:
       - Api__Url=http://myfirstproject-webapi
@@ -25,7 +25,7 @@ services:
     container_name: myfirstproject-webapi
     image: myfirstproject.webapi
     build:
-      context: MyFirstProject.WebApi
+      context: ../src/MyFirstProject.WebApi
       dockerfile: Dockerfile
     ports:
       - 7272:80
