@@ -11,6 +11,9 @@ on:
       - develop
       - main
 
+permissions:
+  pull-requests: write
+  
 env:
   CONFIGURATION: Release
   
