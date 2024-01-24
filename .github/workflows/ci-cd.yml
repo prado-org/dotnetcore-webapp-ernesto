@@ -68,7 +68,12 @@ jobs:
     #    name: UnitTests
     #    path: src/MyFirstProject.Tests/TestResults/*.trx
     #    reporter: dotnet-trx
-        
+    
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v3
+      with:
+        comment-summary-in-pr: true
+          
     - name: Publish APP
       run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApp
 
