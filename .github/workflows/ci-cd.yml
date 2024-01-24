@@ -74,9 +74,9 @@ jobs:
     #    reporter: dotnet-trx
     
     - name: Dependency Review
-      uses: actions/dependency-review-action@v3
+      uses: actions/dependency-review-action@v4
       with:
-        comment-summary-in-pr: true
+        comment-summary-in-pr: always
           
     - name: Publish APP
       run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApp
