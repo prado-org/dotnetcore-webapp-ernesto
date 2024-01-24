@@ -3,7 +3,7 @@ name: dotnetcore-webapp-ci-cd
 on:
   push:
     branches:
-      - feature/*
+      #- feature/*
       - release/*
       - develop
   pull_request:
