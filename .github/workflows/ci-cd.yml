@@ -11,6 +11,10 @@ on:
       - develop
       - main
 
+permissions:
+  pull-requests: write
+  contents: read
+  
 env:
   CONFIGURATION: Release
   
@@ -18,7 +22,7 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Dump GitHub context
       env:
@@ -68,7 +72,12 @@ jobs:
     #    name: UnitTests
     #    path: src/MyFirstProject.Tests/TestResults/*.trx
     #    reporter: dotnet-trx
-        
+    
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v4
+      with:
+        comment-summary-in-pr: always
+          
     - name: Publish APP
       run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApp
 
