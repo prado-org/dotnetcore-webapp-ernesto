@@ -68,7 +68,7 @@ jobs:
     - name: Create test summary
       uses: test-summary/action@dist
       with:
-        paths: TestResults/**/*.xml
+        paths: src/MyFirstProject.Tests/TestResults/tests.xml
       if: success() || failure()
 
     #- name: Test Report
