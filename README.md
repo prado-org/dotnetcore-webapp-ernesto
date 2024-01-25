@@ -14,7 +14,7 @@ This tutorial shows you how to:
 
 [![dotnetcore-webapp-iac](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/iac.yml/badge.svg)](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/iac.yml)
 
-[![dotnetcore-webapp-ci-cd-docker](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/ci-cd-docker.yml/badge.svg)](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/ci-cd-docker.yml)
+[![dotnetcore-webapp-ci-cd-k8s](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/ci-cd-k8s.yml/badge.svg)](https://github.com/prado-org/dotnetcore-webapp/actions/workflows/ci-cd-k8s.yml)
 
 ## Projects
 - :arrow_right: src/MyFirstProject.WebApp
