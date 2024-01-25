@@ -23,6 +23,7 @@ namespace MyFirstProject.Tests
         }
 
         [TestMethod]
+        [Ignore]
         public void TestMethod4()
         {
             Assert.IsTrue(true);
