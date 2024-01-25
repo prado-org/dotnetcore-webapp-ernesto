@@ -63,7 +63,13 @@ jobs:
       run: dotnet build src/MyFirstProject.sln --configuration ${{ env.CONFIGURATION }} --no-restore
     
     - name: Test
-      run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal --logger "trx;LogFileName=test-results.trx"
+      run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal --logger "junit;LogFilePath=TestResults/tests.xml"
+    
+    - name: Create test summary
+      uses: test-summary/action@dist
+      with:
+        paths: TestResults/**/*.xml
+      if: success() || failure()
 
     #- name: Test Report
     #  uses: dorny/test-reporter@v1
