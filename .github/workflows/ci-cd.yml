@@ -70,14 +70,6 @@ jobs:
       with:
         paths: src/MyFirstProject.Tests/TestResults/tests.xml
       if: success() || failure()
-
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()
-      with:
-        name: UnitTests
-        path: src/MyFirstProject.Tests/TestResults/tests.xml
-        reporter: jest-junit
     
     #- name: Dependency Review
     #  uses: actions/dependency-review-action@v4
