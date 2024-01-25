@@ -13,7 +13,10 @@ on:
 
 permissions:
   pull-requests: write
-  contents: read
+  contents: write
+  statuses: write
+  checks: write
+  actions: write
   
 env:
   CONFIGURATION: Release
@@ -70,6 +73,14 @@ jobs:
       with:
         paths: src/MyFirstProject.Tests/TestResults/tests.xml
       if: success() || failure()
+
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: UnitTests
+        path: src/MyFirstProject.Tests/TestResults/tests.xml
+        reporter: java-junit
     
     #- name: Dependency Review
     #  uses: actions/dependency-review-action@v4
