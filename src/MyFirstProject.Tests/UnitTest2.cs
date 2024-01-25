@@ -4,6 +4,7 @@ namespace MyFirstProject.Tests
     public class UnitTest2
     {
         [TestMethod]
+        [Ignore]
         public void TestMethod1()
         {
             Assert.IsTrue(true);
