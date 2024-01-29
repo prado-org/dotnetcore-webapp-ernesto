@@ -15,7 +15,8 @@ env:
   
 jobs:
   Build:
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: arc-dotnet
     steps:
     - uses: actions/checkout@v3
     
