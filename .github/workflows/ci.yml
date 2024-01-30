@@ -52,4 +52,4 @@ jobs:
     #    reporter: java-junit
     
     - name: View folder /usr/share
-      run: ls -lR /usr/share
+      run: ls -lR /usr/share/dotnet
