@@ -16,7 +16,7 @@ env:
 jobs:
   Build:
     #runs-on: ubuntu-latest
-    runs-on: arc-dotnet
+    runs-on: dotnet-scaleset
     steps:
     - name: Check Linux version
       run: lsb_release -a
