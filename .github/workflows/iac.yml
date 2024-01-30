@@ -14,7 +14,7 @@ env:
   AZ_APP_NAME: dotnetproject
   
 jobs:
-  Infra:
+  Common:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -33,6 +33,15 @@ jobs:
         deploymentMode: Incremental
         deploymentName: 'gh-actions'
         parameters: acrName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }}
+  Dev:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Create environment dev
       uses: Azure/arm-deploy@v1
@@ -43,6 +52,15 @@ jobs:
         deploymentMode: Incremental
         deploymentName: 'gh-actions'
         parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev acrName=${{ env.AZ_APP_NAME }}
+  Hml:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Create environment hml
       uses: Azure/arm-deploy@v1
@@ -53,6 +71,15 @@ jobs:
         deploymentMode: Incremental
         deploymentName: 'gh-actions'
         parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=hml acrName=${{ env.AZ_APP_NAME }}
+  Prd:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Create environment prd
       uses: Azure/arm-deploy@v1
