@@ -1,0 +1,59 @@
+name: dotnetcore-webapp-delete-environment
+
+on:
+  workflow_dispatch:  
+ 
+jobs:
+  Common:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Delete acr
+      run: az group delete --name rg-dotnetproject --debug --yes
+  Dev:
+    runs-on: ubuntu-latest
+    needs: Common
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Delete environment dev
+      run: az group delete --name rg-dotnetproject-dev --debug --yes
+      
+  Hml:
+    runs-on: ubuntu-latest
+    needs: Common
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Delete environment hml
+      run: az group delete --name rg-dotnetproject-hml --debug --yes
+      
+  Prd:
+    runs-on: ubuntu-latest
+    needs: Common
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Delete environment prd
+      run: az group delete --name rg-dotnetproject-prd --debug --yes
