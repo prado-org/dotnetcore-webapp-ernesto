@@ -51,7 +51,7 @@ jobs:
         region: ${{ env.AZ_LOCATION }}
         template: iac/main.bicep
         deploymentMode: Incremental
-        deploymentName: 'gh-actions'
+        deploymentName: 'gh-actions-dev'
         parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev acrName=${{ env.AZ_APP_NAME }}
   Hml:
     runs-on: ubuntu-latest
@@ -71,7 +71,7 @@ jobs:
         region: ${{ env.AZ_LOCATION }}
         template: iac/main.bicep
         deploymentMode: Incremental
-        deploymentName: 'gh-actions'
+        deploymentName: 'gh-actions-hml'
         parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=hml acrName=${{ env.AZ_APP_NAME }}
   Prd:
     runs-on: ubuntu-latest
@@ -91,5 +91,5 @@ jobs:
         region: ${{ env.AZ_LOCATION }}
         template: iac/main.bicep
         deploymentMode: Incremental
-        deploymentName: 'gh-actions'
+        deploymentName: 'gh-actions-prd'
         parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=prd acrName=${{ env.AZ_APP_NAME }}
