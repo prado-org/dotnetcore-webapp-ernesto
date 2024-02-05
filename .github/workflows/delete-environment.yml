@@ -16,7 +16,6 @@ jobs:
       run: az group delete --name rg-dotnetproject --debug --yes
   Dev:
     runs-on: ubuntu-latest
-    needs: Common
     steps:
     - uses: actions/checkout@v3
 
@@ -30,7 +29,6 @@ jobs:
       
   Hml:
     runs-on: ubuntu-latest
-    needs: Common
     steps:
     - name: Login
       uses: azure/login@v1
@@ -42,7 +40,6 @@ jobs:
       
   Prd:
     runs-on: ubuntu-latest
-    needs: Common
     steps:
     - name: Login
       uses: azure/login@v1
