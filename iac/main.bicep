@@ -66,3 +66,15 @@ module aksRoleAssigment './aksRoleAssignments.bicep' = {
     aksPrincipalId: aks.outputs.principalId
   }
 }
+
+module sqlServer './sqlServer.bicep' = {
+  name: 'sqlServer'
+  scope: rg
+  params: {
+    sqlServerName: 'sql-${webAppName}'
+    sqlDatabaseName: 'db-${webAppName}-${environment}'
+    sqlAdministratorLogin: 'sqladmin'
+    sqlAdministratorLoginPassword: '#P@ssw0rd123456#'
+    location: location
+  }
+}
