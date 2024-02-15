@@ -32,7 +32,7 @@ jobs:
         template: iac/main-common.bicep
         deploymentMode: Incremental
         deploymentName: 'gh-actions'
-        parameters: acrName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }}
+        parameters: acrName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} webAppName=${{ env.AZ_APP_NAME }}
   Dev:
     runs-on: ubuntu-latest
     needs: Common
