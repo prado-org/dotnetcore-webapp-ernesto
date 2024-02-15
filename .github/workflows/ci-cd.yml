@@ -68,6 +68,9 @@ jobs:
     - name: Test
       run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal --logger "junit;LogFilePath=TestResults/tests.xml"
     
+    - name: Display Folder
+      run: ls -R
+
     - name: Create test summary
       uses: test-summary/action@dist
       with:
