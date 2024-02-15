@@ -29,7 +29,7 @@ jobs:
       with:
         scope: subscription
         region: ${{ env.AZ_LOCATION }}
-        template: iac/main-acr.bicep
+        template: iac/main-common.bicep
         deploymentMode: Incremental
         deploymentName: 'gh-actions'
         parameters: acrName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }}

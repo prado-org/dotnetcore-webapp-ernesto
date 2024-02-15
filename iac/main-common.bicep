@@ -1,4 +1,5 @@
 param acrName string
+param webAppName string
 param location string
 
 targetScope = 'subscription'
@@ -13,6 +14,17 @@ module acr './containerRegistry.bicep' = {
   scope: rg
   params: {
     acrName: format('acr{0}', acrName)
+    location: location
+  }
+}
+
+module sqlServer './sqlServer.bicep' = {
+  name: 'sqlServer'
+  scope: rg
+  params: {
+    sqlServerName: 'sql-${webAppName}'
+    sqlAdministratorLogin: 'sqladmin'
+    sqlAdministratorLoginPassword: '#P@ssw0rd123456#'
     location: location
   }
 }

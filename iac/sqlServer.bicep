@@ -1,5 +1,4 @@
 param sqlServerName string
-param sqlDatabaseName string
 param sqlAdministratorLogin string
 @secure()
 param sqlAdministratorLoginPassword string
@@ -12,19 +11,6 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
     administratorLogin: sqlAdministratorLogin
     administratorLoginPassword: sqlAdministratorLoginPassword
     version: '12.0'
-  }
-}
-
-resource sqlDatabase 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
-  parent: sqlServer
-  name: sqlDatabaseName
-  location: location
-  sku: {
-    name: 'Basic'
-  }
-  properties: {
-    collation: 'SQL_Latin1_General_CP1_CI_AS'
-    maxSizeBytes: 1073741824
   }
 }
 

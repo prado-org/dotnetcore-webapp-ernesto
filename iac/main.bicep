@@ -72,9 +72,18 @@ module sqlServer './sqlServer.bicep' = {
   scope: rg
   params: {
     sqlServerName: 'sql-${webAppName}'
-    sqlDatabaseName: 'db-${webAppName}-${environment}'
     sqlAdministratorLogin: 'sqladmin'
     sqlAdministratorLoginPassword: '#P@ssw0rd123456#'
+    location: location
+  }
+}
+
+module sqlServerDatabase './sqlServerDatabase.bicep' = {
+  name: 'sqlServerDatabase'
+  scope: rg
+  params: {
+    sqlServerName: 'sql-${webAppName}'
+    sqlDatabaseName: 'db-${webAppName}-${environment}'
     location: location
   }
 }
