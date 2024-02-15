@@ -1,7 +1,6 @@
 param acrName string
 param webAppName string
 param location string
-param environment string
 
 targetScope = 'subscription'
 
