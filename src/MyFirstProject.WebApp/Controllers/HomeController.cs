@@ -9,10 +9,13 @@ namespace MyFirstProject.WebApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
+        private readonly IHostEnvironment _env;
+
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, IHostEnvironment env)
         {
             _logger = logger;
             _configuration = configuration;
+            _env = env;
         }
 
         public IActionResult Index()
@@ -28,6 +31,7 @@ namespace MyFirstProject.WebApp.Controllers
             ViewBag.VersionInfoNumber = _configuration.GetSection("VersionInfo:Number").Value;
             ViewBag.VersionInfoDate = _configuration.GetSection("VersionInfo:Date").Value;
             ViewBag.Api = _configuration.GetSection("Api:Url").Value;
+            ViewBag.EnvironmentName = _env.EnvironmentName;
 
             var connAdo = "payoihpodpcqhn6xhaxzau3w77fgvrgtk26qgrigitpbl2rnsr4q";
             _logger.LogInformation("Connection ADO = " + connAdo);

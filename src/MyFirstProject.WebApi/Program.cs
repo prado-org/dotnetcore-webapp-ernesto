@@ -3,6 +3,8 @@ using MyFirstProject.WebApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var isDevelopment = builder.Environment.IsDevelopment();
+
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -15,8 +17,20 @@ string connString = builder.Configuration.GetConnectionString("DefaultConnection
 //    opt.UseSqlServer(connString));
 
 // use in-memory database
-builder.Services.AddDbContext<TodoItemContext>(opt =>
-    opt.UseInMemoryDatabase("TodoList"));
+//builder.Services.AddDbContext<TodoItemContext>(opt =>
+//    opt.UseInMemoryDatabase("TodoList"));
+
+builder.Services.AddDbContext<TodoItemContext>(options =>
+{
+    if (isDevelopment)
+    {
+        options.UseInMemoryDatabase("MyInMemoryDb");
+    }
+    else
+    {
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    }
+});
 
 var app = builder.Build();
 
