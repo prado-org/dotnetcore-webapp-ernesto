@@ -11,8 +11,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 string connString = builder.Configuration.GetConnectionString("DefaultConnection");
+//builder.Services.AddDbContext<TodoItemContext>(opt =>
+//    opt.UseSqlServer(connString));
+
+// use in-memory database
 builder.Services.AddDbContext<TodoItemContext>(opt =>
-    opt.UseSqlServer(connString));
+    opt.UseInMemoryDatabase("TodoList"));
 
 var app = builder.Build();
 
