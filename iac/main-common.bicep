@@ -1,6 +1,7 @@
 param acrName string
 param webAppName string
 param location string
+param environment string
 
 targetScope = 'subscription'
 
@@ -25,6 +26,7 @@ module sqlServer './sqlServer.bicep' = {
     sqlServerName: 'sql-${webAppName}'
     sqlAdministratorLogin: 'sqladmin'
     sqlAdministratorLoginPassword: '#P@ssw0rd123456#'
+    sqlDatabaseName: 'db-${webAppName}'
     location: location
   }
 }

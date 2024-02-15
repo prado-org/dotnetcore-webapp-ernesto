@@ -66,13 +66,3 @@ module aksRoleAssigment './aksRoleAssignments.bicep' = {
     aksPrincipalId: aks.outputs.principalId
   }
 }
-
-module sqlServerDatabase './sqlServerDatabase.bicep' = {
-  name: 'sqlServerDatabase'
-  scope: rgCommon
-  params: {
-    sqlServerName: 'sql-${webAppName}'
-    sqlDatabaseName: 'db-${webAppName}-${environment}'
-    location: location
-  }
-}
