@@ -55,7 +55,7 @@ jobs:
         echo "ACTIONS_RUNTIME_URL: $ACTIONS_RUNTIME_URL"
 
     - name: Setup dotnet version
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
     
@@ -98,13 +98,13 @@ jobs:
       run: dotnet publish src/MyFirstProject.WebApi/MyFirstProject.WebApi.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApi
 
     - name: Upload APP Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: app-artifact
         path: PublishApp
     
     - name: Upload API Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: api-artifact
         path: PublishApi
@@ -117,7 +117,7 @@ jobs:
       url: https://app-dotnetproject-dev.azurewebsites.net
     if: ${{ github.ref == 'refs/heads/develop' }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
       
       - name: Set version date
         run: |
@@ -166,7 +166,7 @@ jobs:
     environment: webapp-hml
     if: ${{ startsWith(github.ref, 'refs/heads/release/') }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
       
       - name: Set version date
         run: |
@@ -214,7 +214,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: webapp-prd
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
       
       - name: Set version date
         run: |
