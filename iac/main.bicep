@@ -10,7 +10,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-resource rgAcr 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
+resource rgCommon 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
   name: 'rg-${acrName}'
 }
 
@@ -60,7 +60,7 @@ module aks './kubernetes.bicep' = {
 
 module aksRoleAssigment './aksRoleAssignments.bicep' = {
   name: 'aksRoleAssigment'
-  scope: rgAcr
+  scope: rgCommon
   params: {
     acrName: format('acr{0}', acrName)
     aksPrincipalId: aks.outputs.principalId
@@ -69,7 +69,7 @@ module aksRoleAssigment './aksRoleAssignments.bicep' = {
 
 module sqlServerDatabase './sqlServerDatabase.bicep' = {
   name: 'sqlServerDatabase'
-  scope: rg
+  scope: rgCommon
   params: {
     sqlServerName: 'sql-${webAppName}'
     sqlDatabaseName: 'db-${webAppName}-${environment}'
