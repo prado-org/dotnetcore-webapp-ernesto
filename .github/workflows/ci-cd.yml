@@ -93,14 +93,14 @@ jobs:
     #    comment-summary-in-pr: always
           
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: csharp
         #queries: security-extended,security-and-quality
         queries: security-extended
     
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
       with:
         category: "/language:csharp"
     
