@@ -60,6 +60,13 @@ jobs:
       with:
         dotnet-version: 6.0.x
     
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: csharp
+        #queries: security-extended,security-and-quality
+        queries: security-extended
+
     - name: Restore dependencies
       run: dotnet restore src/MyFirstProject.sln
     
@@ -91,13 +98,6 @@ jobs:
     #  if: ${{ github.event_name == 'pull_request' }}
     #  with:
     #    comment-summary-in-pr: always
-          
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: csharp
-        #queries: security-extended,security-and-quality
-        queries: security-extended
     
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
