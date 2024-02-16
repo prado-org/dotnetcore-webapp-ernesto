@@ -16,7 +16,8 @@ permissions:
   contents: write
   statuses: write
   checks: write
-  actions: write
+  actions: write    
+  security-events: write
   
 env:
   CONFIGURATION: Release
@@ -91,12 +92,24 @@ jobs:
     #  with:
     #    comment-summary-in-pr: always
           
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: csharp
+        #queries: security-extended,security-and-quality
+        queries: security-extended
+    
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:csharp"
+    
     - name: Publish APP
       run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApp
 
     - name: Publish API
       run: dotnet publish src/MyFirstProject.WebApi/MyFirstProject.WebApi.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApi
-
+    
     - name: Upload APP Artifact
       uses: actions/upload-artifact@v4
       with:
@@ -108,48 +121,10 @@ jobs:
       with:
         name: api-artifact
         path: PublishApi
-  
-  Analyze:
-    runs-on: 'ubuntu-latest'
-    timeout-minutes: 360
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'csharp' ]
-        # CodeQL supports [ 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift' ]
-        # Use only 'java-kotlin' to analyze code written in Java, Kotlin or both
-        # Use only 'javascript-typescript' to analyze code written in JavaScript, TypeScript or both
-        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: ${{ matrix.language }}
-        #queries: security-extended,security-and-quality
-        queries: security-extended
-
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-      with:
-        category: "/language:${{matrix.language}}"
 
   Dev:
     needs: 
       - Build
-      - Analyze
     runs-on: ubuntu-latest
     environment:
       name: webapp-dev
@@ -202,7 +177,6 @@ jobs:
   Hml:
     needs: 
       - Build
-      - Analyze
     runs-on: ubuntu-latest
     environment: webapp-hml
     if: ${{ startsWith(github.ref, 'refs/heads/release/') }}
@@ -251,7 +225,8 @@ jobs:
           package: app-artifact
 
   Prd:
-    needs: Hml
+    needs: 
+      - Hml
     runs-on: ubuntu-latest
     environment: webapp-prd
     steps:
