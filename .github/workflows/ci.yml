@@ -16,7 +16,8 @@ env:
 jobs:
   Build:
     #runs-on: ubuntu-latest
-    runs-on: dotnet-scaleset
+    #runs-on: dotnet-scaleset
+    runs-on: self-hosted
     steps:
     - name: Check Linux version
       run: lsb_release -a
