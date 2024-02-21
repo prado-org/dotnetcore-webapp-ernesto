@@ -52,6 +52,3 @@ jobs:
     #    name: UnitTests
     #    path: src/MyFirstProject.Tests/TestResults/tests.xml
     #    reporter: java-junit
-    
-    - name: View folder /usr/share
-      run: ls -R /usr/share/dotnet
