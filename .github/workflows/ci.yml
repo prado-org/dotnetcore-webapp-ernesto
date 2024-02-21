@@ -20,9 +20,10 @@ jobs:
     runs-on: self-hosted
     steps:
     - name: Check Linux version
+      if: ${{ runner.os == 'Linux' }}
       run: lsb_release -a
       
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
@@ -38,11 +39,11 @@ jobs:
     - name: Test
       run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal --logger "junit;LogFilePath=TestResults/tests.xml"
     
-    - name: Create test summary
-      uses: test-summary/action@dist
-      with:
-        paths: src/MyFirstProject.Tests/TestResults/tests.xml
-      if: success() || failure()
+    #- name: Create test summary
+    #  uses: test-summary/action@dist
+    #  with:
+    #    paths: src/MyFirstProject.Tests/TestResults/tests.xml
+    #  if: success() || failure()
 
     #- name: Test Report
     #  uses: dorny/test-reporter@v1
