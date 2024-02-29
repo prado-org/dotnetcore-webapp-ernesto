@@ -84,40 +84,38 @@ jobs:
       
       - name: Modify deployment files
         run: |
-          echo "Set git config"
+          echo "--- Version RUN_NUMBER ---"
+          echo $RUN_NUMBER
+          
+          echo "--- Set git config ---"
           git config user.email actions@github.com
           git config user.name "GitHub Actions"
           
-          echo "View directory"
+          echo "--- View directory ---"
           pwd
           
-          echo "::group::WebApi File"
-          echo "View webapi file"
+          echo "--- View webapi file ---"
           cat WebApi/k8s-deployment.yaml
           
-          echo "Replace webapi image tag"
+          echo "--- Replace webapi image tag ---"
           sed -i "s/acrdotnetproject.azurecr.io\/myfirstproject.webapi:latest/acrdotnetproject.azurecr.io\/myfirstproject.webapi:$RUN_NUMBER/" WebApi/k8s-deployment.yaml
           
-          echo "View modified file"
+          echo "--- View modified file ---"
           cat WebApi/k8s-deployment.yaml
-          echo "::endgroup::"
 
-          echo "::group::WebApp File"
-          echo "View webapp file"
+          echo "--- View webapp file ---"
           cat WebApp/k8s-deployment.yaml
           
-          echo "Replace webapp image tag"
+          echo "--- Replace webapp image tag ---"
           sed -i "s/acrdotnetproject.azurecr.io\/myfirstproject.webapp:latest/acrdotnetproject.azurecr.io\/myfirstproject.webapp:$RUN_NUMBER/" WebApp/k8s-deployment.yaml
           
-          echo "View modified file"
+          echo "--- View modified file ---"
           cat WebApp/k8s-deployment.yaml
-          echo "::endgroup::"
 
-          echo "::group::Git commit and push"
+          echo "--- Git commit and push ---"
           git status
           git add .
           git commit -m 'Done by Github Actions Job changemanifest: $RUN_NUMBER'
           git push origin main
-          echo "::endgroup::"
         env:
           RUN_NUMBER: ${{ GITHUB.RUN_NUMBER }}
