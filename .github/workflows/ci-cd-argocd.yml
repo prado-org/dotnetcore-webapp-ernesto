@@ -113,9 +113,11 @@ jobs:
           cat WebApp/k8s-deployment.yaml
           echo "::endgroup::"
 
-          echo "Git commit and push"
+          echo "::group::Git commit and push"
+          git status
           git add .
           git commit -m 'Done by Github Actions Job changemanifest: $RUN_NUMBER'
           git push origin main
+          echo "::endgroup::"
         env:
           RUN_NUMBER: ${{ GITHUB.RUN_NUMBER }}
