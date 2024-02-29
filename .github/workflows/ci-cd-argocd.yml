@@ -94,6 +94,7 @@ jobs:
           echo "--- View directory ---"
           pwd
           
+          echo "::group::Web API file"
           echo "--- View webapi file ---"
           cat WebApi/k8s-deployment.yaml
           
@@ -102,7 +103,9 @@ jobs:
           
           echo "--- View modified file ---"
           cat WebApi/k8s-deployment.yaml
+          echo "::endgroup::"
 
+          echo "::group::Web APP file"
           echo "--- View webapp file ---"
           cat WebApp/k8s-deployment.yaml
           
@@ -111,11 +114,14 @@ jobs:
           
           echo "--- View modified file ---"
           cat WebApp/k8s-deployment.yaml
+          echo "::endgroup::"
 
+          echo "::group::Git commands"
           echo "--- Git commit and push ---"
           git status
           git add .
           git commit -m "Done by Github Actions Job changemanifest: $RUN_NUMBER"
           git push origin main
+          echo "::endgroup::"
         env:
           RUN_NUMBER: ${{ GITHUB.RUN_NUMBER }}
