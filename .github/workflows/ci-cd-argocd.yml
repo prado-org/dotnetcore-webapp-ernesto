@@ -70,7 +70,7 @@ jobs:
         name: Checkout config repository
         with:
           repository: 'prado-org/dotnetcore-webapp-config'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PAT }}
           
       - name: Dump GitHub context
         env:
