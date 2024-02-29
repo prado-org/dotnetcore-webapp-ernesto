@@ -98,8 +98,7 @@ jobs:
           cat WebApi/k8s-deployment.yaml
           
           echo "--- Replace webapi image tag ---"
-          pwd
-          sed -i "s/acrdotnetproject.azurecr.io\/myfirstproject.webapi:latest/acrdotnetproject.azurecr.io\/myfirstproject.webapi:$RUN_NUMBER/" WebApi/k8s-deployment.yaml
+          sed -i 's|acrdotnetproject.azurecr.io/myfirstproject.webapi:[^"]*|acrdotnetproject.azurecr.io/myfirstproject.webapi:$RUN_NUMBER|' WebApi/k8s-deployment.yaml
           
           echo "--- View modified file ---"
           cat WebApi/k8s-deployment.yaml
@@ -108,8 +107,7 @@ jobs:
           cat WebApp/k8s-deployment.yaml
           
           echo "--- Replace webapp image tag ---"
-          pwd
-          sed -i "s/acrdotnetproject.azurecr.io\/myfirstproject.webapp:latest/acrdotnetproject.azurecr.io\/myfirstproject.webapp:$RUN_NUMBER/" WebApp/k8s-deployment.yaml
+          sed -i 's|acrdotnetproject.azurecr.io/myfirstproject.webapp:[^"]*|acrdotnetproject.azurecr.io/myfirstproject.webapp:$RUN_NUMBER|' WebApp/k8s-deployment.yaml
           
           echo "--- View modified file ---"
           cat WebApp/k8s-deployment.yaml
