@@ -86,7 +86,7 @@ jobs:
         run: |
           echo "--- Version RUN_NUMBER ---"
           echo $RUN_NUMBER
-          
+
           echo "--- Set git config ---"
           git config user.email actions@github.com
           git config user.name "GitHub Actions"
@@ -98,6 +98,7 @@ jobs:
           cat WebApi/k8s-deployment.yaml
           
           echo "--- Replace webapi image tag ---"
+          pwd
           sed -i "s/acrdotnetproject.azurecr.io\/myfirstproject.webapi:latest/acrdotnetproject.azurecr.io\/myfirstproject.webapi:$RUN_NUMBER/" WebApi/k8s-deployment.yaml
           
           echo "--- View modified file ---"
@@ -107,6 +108,7 @@ jobs:
           cat WebApp/k8s-deployment.yaml
           
           echo "--- Replace webapp image tag ---"
+          pwd
           sed -i "s/acrdotnetproject.azurecr.io\/myfirstproject.webapp:latest/acrdotnetproject.azurecr.io\/myfirstproject.webapp:$RUN_NUMBER/" WebApp/k8s-deployment.yaml
           
           echo "--- View modified file ---"
