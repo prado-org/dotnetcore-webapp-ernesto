@@ -17,8 +17,7 @@ env:
   
 jobs:
   build-docker:
-    #runs-on: ubuntu-latest
-    runs-on: dind-scaleset
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     
