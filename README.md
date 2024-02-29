@@ -64,11 +64,104 @@ docker-compose -f 'DockerCompose.yml' up --build -d
 docker ps -a
 ```
 
+## ARGO CD
+
+https://argo-cd.readthedocs.io/en/stable/getting_started/
+https://techcommunity.microsoft.com/t5/apps-on-azure-blog/getting-started-with-gitops-argo-and-azure-kubernetes-service/ba-p/3288595
+https://igboie.medium.com/kubernetes-ci-cd-with-github-github-actions-and-argo-cd-36b88b6bda64
+https://medium.com/@tanmaybhandge/ci-cd-with-github-github-actions-argo-cd-and-kubernetes-cluster-192b019129f6
+
+```powershell
+$rg_name="rg-argocd"
+$location="eastus"
+$aks_name="aks-argocd"
+$aks_namespace="argocd"
+
+# Create Resource Group
+az group create --name $rg_name --location $location
+
+# Create AKS cluster
+az aks create --resource-group $rg_name --name $aks_name --node-count 1 --generate-ssh-keys
+
+# Connect to AKS cluster
+az aks get-credentials --resource-group $rg_name --name $aks_name
+
+# Create AKS namespace
+kubectl create namespace $aks_namespace
+
+# Install ARGOCD
+kubectl apply -n $aks_namespace -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# Get ARGOCD admin password
+kubectl get secret argocd-initial-admin-secret -n $aks_namespace -o json | ConvertFrom-Json | select -ExpandProperty data | % { $_.PSObject.Properties | % { $_.Name + [System.Environment]::NewLine + [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_.Value)) + [System.Environment]::NewLine + [System.Environment]::NewLine } }
+
+# Access with localhost
+kubectl port-forward svc/argocd-server -n $aks_namespace 8080:443
+https://localhost:8080/
+user:admin
+
+#Access with Load Balancer - demonstration purposes only
+kubectl patch service argocd-server -n $aks_namespace -p '{\"spec\": {\"type\": \"LoadBalancer\"}}'
+kubectl get services --namespace $aks_namespace argocd-server --output jsonpath='{.status.loadBalancer.ingress[0].ip}'
+
+https://172.214.7.210/
+user:admin
+
+# Install ARGOCD CLI
+$version = (Invoke-RestMethod https://api.github.com/repos/argoproj/argo-cd/releases/latest).tag_name
+
+$url = "https://github.com/argoproj/argo-cd/releases/download/" + $version + "/argocd-windows-amd64.exe"
+$output = "C:\argocd\argocd.exe"
+
+Invoke-WebRequest -Uri $url -OutFile $output
+
+[Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\argocd", "User")
+
+# Login Argocd Server
+argocd login 172.214.7.210 --username admin
+
+argocd account list
+
+argocd cluster list
+
+# You can only register a new K8s cluster from the Argo CD CLI
+# Login AKS Cluster
+az aks get-credentials --resource-group rg-dotnetproject-dev --name aks-dotnetproject-dev
+
+# List AKS contexts
+kubectl config get-contexts -o name
+
+# Add AKS cluster to ArgoCD
+argocd cluster add aks-dotnetproject-dev
+
+# List clusters
+argocd cluster list
+
+# list service account into AKS
+kubectl get serviceAccounts --all-namespaces
+
+# List argocd project
+argocd proj list
+
+# Add private GitRepo to Argocd
+argocd repo add https://github.com/prado-org/dotnetcore-webapp-config.git --name dotnetcore-webapp --username git --password <secret>
+
+# List repos
+argocd repo list
+
+# Create argocd app
+argocd app create dotnetcore-webapp --repo https://github.com/prado-org/dotnetcore-webapp-config.git --path ./ --dest-namespace default --dest-server https://aks-dotnetproject-dev-fuqes3xs.hcp.eastus.azmk8s.io:443 --directory-recurse
+
+# Sync an app
+argocd app sync dotnetcore-webapp
+
+# Status an app
+argocd app get dotnetcore-webapp
+
+```
 
 ## Contribute
 
 Contributions are always welcome!
 
 Please read the [contribution guidelines](CONTRIBUTING.md) first.
-
-Teste
