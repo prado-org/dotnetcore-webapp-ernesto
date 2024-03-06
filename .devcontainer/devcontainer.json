@@ -9,21 +9,26 @@
 	//"service": "devcontainer",
 	//"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	
+	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers/features/azure-cli:1": {},
 		"ghcr.io/devcontainers/features/dotnet:2": {}
 	},
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [5000, 5001],
-	// "portsAttributes": {
-	//		"5001": {
-	//			"protocol": "https"
-	//		}
-	// }
+	"forwardPorts": [5260, 5261],
+	"portsAttributes": {
+		"5260": {
+			"protocol": "http",
+			"label": "APP",
+			"onAutoForward": "notify"
+		},
+		"5261": {
+			"protocol": "http",
+			"label": "API",
+			"onAutoForward": "notify"
+		}
+	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	//"postCreateCommand": ["dotnet restore src/MyFirstProject.sln"],
