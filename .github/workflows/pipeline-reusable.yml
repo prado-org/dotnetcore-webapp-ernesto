@@ -8,12 +8,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  example-workflow:
-    uses: prado-org/reusable-workflows/.github/workflows/example.yml@main
-    with:
-      msg: 'Teste Leandro Prado'
-      runner-name: 'ubuntu-latest'
-  
   dotnet-build:
     uses: prado-org/reusable-workflows/.github/workflows/build-dotnet-core.yml@main
     with:
