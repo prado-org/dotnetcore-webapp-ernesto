@@ -27,12 +27,23 @@ jobs:
     with:
       runner-name: 'ubuntu-latest'
       webapp-name: 'app-MyFirstProject-dev'
+      environment-name: 'webapp-dev'
     secrets: inherit
   
-  deploy-azure-webapp-prd:
+  deploy-azure-webapp-hml:
     uses: prado-org/reusable-workflows/.github/workflows/deploy-azure-webapp.yml@main
     needs: deploy-azure-webapp-dev
     with:
       runner-name: 'ubuntu-latest'
+      webapp-name: 'app-MyFirstProject-hml'
+      environment-name: 'webapp-hml'
+    secrets: inherit
+  
+  deploy-azure-webapp-prd:
+    uses: prado-org/reusable-workflows/.github/workflows/deploy-azure-webapp.yml@main
+    needs: deploy-azure-webapp-hml
+    with:
+      runner-name: 'ubuntu-latest'
       webapp-name: 'app-MyFirstProject-prd'
+      environment-name: 'webapp-prd'
     secrets: inherit
