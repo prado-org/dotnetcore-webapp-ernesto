@@ -20,7 +20,7 @@ jobs:
     needs: dotnet-build
     with:
       runner-name: 'ubuntu-latest'
-      webapp-name: 'app-MyFirstProject-dev'
+      webapp-name: 'app-dotnetproject-dev'
       environment-name: 'webapp-dev'
     secrets: inherit
   
@@ -29,7 +29,7 @@ jobs:
     needs: deploy-azure-webapp-dev
     with:
       runner-name: 'ubuntu-latest'
-      webapp-name: 'app-MyFirstProject-hml'
+      webapp-name: 'app-dotnetproject-hml'
       environment-name: 'webapp-hml'
     secrets: inherit
   
@@ -38,6 +38,6 @@ jobs:
     needs: deploy-azure-webapp-hml
     with:
       runner-name: 'ubuntu-latest'
-      webapp-name: 'app-MyFirstProject-prd'
+      webapp-name: 'app-dotnetproject--prd'
       environment-name: 'webapp-prd'
     secrets: inherit
