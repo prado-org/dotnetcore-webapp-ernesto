@@ -45,16 +45,15 @@ namespace MyFirstProject.WebApi.Controllers
 
                 SqlCommand command = new SqlCommand(selectCommand, connection);
 
-                using (SqlDataReader reader = command.ExecuteReader())
+                SqlDataReader reader = command.ExecuteReader();
+                
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        DateTime data = reader.GetDateTime(0);
-                        string summary = reader.GetString(1);
-                        int temperature = reader.GetInt32(2);
+                    DateTime data = reader.GetDateTime(0);
+                    string summary = reader.GetString(1);
+                    int temperature = reader.GetInt32(2);
 
-                        item = new WeatherForecast { Date = data, Summary = summary, TemperatureC = temperature };
-                    }
+                    item = new WeatherForecast { Date = data, Summary = summary, TemperatureC = temperature };
                 }
 
                 return item;
