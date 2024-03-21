@@ -165,3 +165,11 @@ argocd app get dotnetcore-webapp
 Contributions are always welcome!
 
 Please read the [contribution guidelines](CONTRIBUTING.md) first.
+
+
+{
+  "appId": "47e5a3d7-e460-47cf-a9c9-d359beba4f8d",
+  "displayName": "myServicePrincipalTest",
+  "password": "rJe8Q~Hdb3nYkT6HmNoxJuBjwnJwfuivsVzlsdyM",
+  "tenant": "16b3c013-d300-468d-ac64-7eda0820b6d3"
+}
