@@ -1,5 +1,8 @@
 # My First Project
-Teste 02
+
+> [!WARNING]
+> This code is used for example purposes only.
+
 In this tutorial for C# development with ASP.NET Core, you create a C# ASP.NET Core web app in Visual Studio.
 
 This tutorial shows you how to:
