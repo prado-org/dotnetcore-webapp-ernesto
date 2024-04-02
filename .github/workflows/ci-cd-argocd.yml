@@ -1,0 +1,127 @@
+name: dotnetcore-webapp-ci-cd-argocd
+
+on:
+  #push:
+  #  branches:
+  #    - feature/*
+  #    - release/*
+  #    - develop
+  #pull_request:
+  #  branches:
+  #    - develop
+  #    - main
+  workflow_dispatch: 
+
+env:
+  CONFIGURATION: Release
+  
+jobs:
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: ACR Login
+        run: az acr login --name ${{ vars.ACR_URL }}
+      
+      - name: Build and push WebApi image
+        uses: docker/build-push-action@v3
+        with:
+          context: src/MyFirstProject.WebApi
+          file: src/MyFirstProject.WebApi/Dockerfile
+          tags: |
+            ${{ vars.ACR_URL }}/myfirstproject.webapi:${{ GITHUB.RUN_ID }}
+            ${{ vars.ACR_URL }}/myfirstproject.webapi:latest
+          push: true
+
+      - name: Build and push WebApp image
+        uses: docker/build-push-action@v3
+        with:
+          context: src/MyFirstProject.WebApp
+          file: src/MyFirstProject.WebApp/Dockerfile
+          tags: |
+            ${{ vars.ACR_URL }}/myfirstproject.webapp:${{ GITHUB.RUN_ID }}
+            ${{ vars.ACR_URL }}/myfirstproject.webapp:latest
+          push: true
+      
+      - name: View images
+        run: docker images
+  
+  modify-config-files:
+    runs-on: ubuntu-latest
+    needs: build-docker
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout config repository
+        with:
+          repository: 'prado-org/dotnetcore-webapp-config'
+          token: ${{ secrets.GH_PAT }}
+          
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      
+      - name: Modify deployment files
+        run: |
+          echo "--- Image Label ---"
+          echo $IMAGE_LABEL
+
+          echo "--- Set git config ---"
+          git config user.email actions@github.com
+          git config user.name "GitHub Actions"
+          
+          echo "--- View directory ---"
+          pwd
+          
+          echo "::group::Web API file"
+          echo "--- View webapi image ---"
+          cat WebApi/k8s-deployment.yaml | grep "image:" | awk -F'"' '{print $2}'
+          
+          echo "--- Replace webapi image tag ---"
+          sed -i "s|acrdotnetproject.azurecr.io/myfirstproject.webapi:[^\"]*|acrdotnetproject.azurecr.io/myfirstproject.webapi:$IMAGE_LABEL|" WebApi/k8s-deployment.yaml
+          
+          echo "--- View modified image ---"
+          cat WebApi/k8s-deployment.yaml | grep "image:" | awk -F'"' '{print $2}'
+          echo "::endgroup::"
+
+          echo "::group::Web APP file"
+          echo "--- View webapp image ---"
+          cat WebApp/k8s-deployment.yaml | grep "image:" | awk -F'"' '{print $2}'
+          
+          echo "--- Replace webapp image tag ---"
+          sed -i "s|acrdotnetproject.azurecr.io/myfirstproject.webapp:[^\"]*|acrdotnetproject.azurecr.io/myfirstproject.webapp:$IMAGE_LABEL|" WebApp/k8s-deployment.yaml
+          
+          echo "--- View modified image ---"
+          cat WebApp/k8s-deployment.yaml | grep "image:" | awk -F'"' '{print $2}'
+          echo "::endgroup::"
+
+          echo "::group::Git commands"
+          echo "--- Git commit and push ---"
+          git status
+          git add .
+          git commit -m "Done by Github Actions Job changemanifest: $IMAGE_LABEL"
+          git push origin main
+          echo "::endgroup::"
+        env:
+          IMAGE_LABEL: ${{ GITHUB.RUN_ID }}

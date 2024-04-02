@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/dotnet:1-6.0
+    volumes:
+      - ../..:/workspaces:cached
+    network_mode: service:myfirstproject-webapp
+    command: sleep infinity
+  
+  myfirstproject-webapp:
+    container_name: myfirstproject-webapp
+    image: myfirstproject.webapp
+    build:
+      context: ../src/MyFirstProject.WebApp
+      dockerfile: Dockerfile
+    environment:
+      - Api__Url=http://myfirstproject-webapi
+    ports:
+      - 7171:80
+    links:
+      - myfirstproject-webapi
+    depends_on:
+      - myfirstproject-webapi
+  
+  myfirstproject-webapi:
+    container_name: myfirstproject-webapi
+    image: myfirstproject.webapi
+    build:
+      context: ../src/MyFirstProject.WebApi
+      dockerfile: Dockerfile
+    ports:
+      - 7272:80

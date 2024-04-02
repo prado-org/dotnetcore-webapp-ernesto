@@ -3,7 +3,7 @@ name: dotnetcore-webapp-ci-cd
 on:
   push:
     branches:
-      - feature/*
+      #- feature/*
       - release/*
       - develop
   pull_request:
@@ -11,6 +11,14 @@ on:
       - develop
       - main
 
+permissions:
+  pull-requests: write
+  contents: write
+  statuses: write
+  checks: write
+  actions: write    
+  security-events: write
+  
 env:
   CONFIGURATION: Release
   
@@ -18,7 +26,7 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Dump GitHub context
       env:
@@ -47,11 +55,18 @@ jobs:
         echo "RUNNER_WORKSPACE: $RUNNER_WORKSPACE"
         echo "ACTIONS_RUNTIME_URL: $ACTIONS_RUNTIME_URL"
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+    - name: Setup dotnet version
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
     
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: csharp
+        #queries: security-extended,security-and-quality
+        queries: security-extended
+
     - name: Restore dependencies
       run: dotnet restore src/MyFirstProject.sln
     
@@ -59,43 +74,64 @@ jobs:
       run: dotnet build src/MyFirstProject.sln --configuration ${{ env.CONFIGURATION }} --no-restore
     
     - name: Test
-      run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal --logger "trx;LogFileName=test-results.trx"
+      run: dotnet test src/MyFirstProject.Tests/MyFirstProject.Tests.csproj --no-build --configuration ${{ env.CONFIGURATION }} --verbosity normal --logger "junit;LogFilePath=TestResults/tests.xml"
+    
+    - name: Display Folder
+      run: ls -R
 
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()
+    #- name: Create test summary
+    #  uses: test-summary/action@dist
+    #  with:
+    #    paths: src/MyFirstProject.Tests/TestResults/tests.xml
+    #  if: success() || failure()
+
+    #- name: Test Report
+    #  uses: dorny/test-reporter@v1
+    #  if: success() || failure()
+    #  with:
+    #    name: UnitTests
+    #    path: src/MyFirstProject.Tests/TestResults/tests.xml
+    #    reporter: java-junit
+    
+    #- name: Dependency Review
+    #  uses: actions/dependency-review-action@v4
+    #  if: ${{ github.event_name == 'pull_request' }}
+    #  with:
+    #    comment-summary-in-pr: always
+    
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
       with:
-        name: UnitTests
-        path: src/MyFirstProject.Tests/TestResults/*.trx
-        reporter: dotnet-trx
-        
+        category: "/language:csharp"
+    
     - name: Publish APP
       run: dotnet publish src/MyFirstProject.WebApp/MyFirstProject.WebApp.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApp
 
     - name: Publish API
       run: dotnet publish src/MyFirstProject.WebApi/MyFirstProject.WebApi.csproj --no-build --configuration ${{ env.CONFIGURATION }} --output PublishApi
-
+    
     - name: Upload APP Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: app-artifact
         path: PublishApp
     
     - name: Upload API Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: api-artifact
         path: PublishApi
-  
+
   Dev:
-    needs: Build
+    needs: 
+      - Build
     runs-on: ubuntu-latest
     environment:
-      name: dev
+      name: webapp-dev
       url: https://app-dotnetproject-dev.azurewebsites.net
     if: ${{ github.ref == 'refs/heads/develop' }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
       
       - name: Set version date
         run: |
@@ -137,13 +173,15 @@ jobs:
           resource-group-name: rg-dotnetproject-dev
           app-name: app-dotnetproject-dev
           package: app-artifact
+  
   Hml:
-    needs: Build
+    needs: 
+      - Build
     runs-on: ubuntu-latest
-    environment: hml
+    environment: webapp-hml
     if: ${{ startsWith(github.ref, 'refs/heads/release/') }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
       
       - name: Set version date
         run: |
@@ -187,11 +225,12 @@ jobs:
           package: app-artifact
 
   Prd:
-    needs: Hml
+    needs: 
+      - Hml
     runs-on: ubuntu-latest
-    environment: prd
+    environment: webapp-prd
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
       
       - name: Set version date
         run: |

@@ -13,10 +13,12 @@ namespace MyFirstProject.WebApi.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IConfiguration _configuration;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
@@ -31,29 +33,6 @@ namespace MyFirstProject.WebApi.Controllers
             .ToArray();
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, WeatherForecast item)
-        {
-            try
-            {
-                _logger.LogInformation("Method - PutTodoItem");
-                _logger.LogInformation("Param - Id = " + id);
-                _logger.LogInformation("Param - Item = " + item);
-                
-                if (id != item.TemperatureC)
-                {
-                    return BadRequest();
-                }
-            
-                return Ok();
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError("ERROR: " + ex.ToString());
-                throw;
-            }
-        }
-
         private WeatherForecast WeatherForecastById(int id)
         {
             try
@@ -66,16 +45,15 @@ namespace MyFirstProject.WebApi.Controllers
 
                 SqlCommand command = new SqlCommand(selectCommand, connection);
 
-                using (SqlDataReader reader = command.ExecuteReader())
+                SqlDataReader reader = command.ExecuteReader();
+                
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                    {
-                        DateTime data = reader.GetDateTime(0);
-                        string summary = reader.GetString(1);
-                        int temperature = reader.GetInt32(2);
+                    DateTime data = reader.GetDateTime(0);
+                    string summary = reader.GetString(1);
+                    int temperature = reader.GetInt32(2);
 
-                        item = new WeatherForecast { Date = data, Summary = summary, TemperatureC = temperature };
-                    }
+                    item = new WeatherForecast { Date = data, Summary = summary, TemperatureC = temperature };
                 }
 
                 return item;

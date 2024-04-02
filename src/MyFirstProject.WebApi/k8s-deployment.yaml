@@ -1,0 +1,45 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: myfirstproject-api-svc
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+spec:
+  type: LoadBalancer
+  selector:
+    app: myfirstproject-api
+    tier: backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myfirstproject-api-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myfirstproject-api
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: myfirstproject-api
+        tier: backend
+    spec:
+      containers:
+        - name: myfirstproject-api
+          image: "acrdotnetproject.azurecr.io/myfirstproject.webapi:latest"
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "128Mi"

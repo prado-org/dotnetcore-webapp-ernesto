@@ -4,25 +4,36 @@
 	"name": "C# (.NET)",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/dotnet:1-6.0",
+	
+	//"dockerComposeFile": "docker-compose.yml",
+	//"service": "devcontainer",
+	//"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	
+	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers/features/azure-cli:1": {},
 		"ghcr.io/devcontainers/features/dotnet:2": {}
 	},
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [5000, 5001],
-	// "portsAttributes": {
-	//		"5001": {
-	//			"protocol": "https"
-	//		}
-	// }
+	"forwardPorts": [5260, 5261],
+	"portsAttributes": {
+		"5260": {
+			"protocol": "http",
+			"label": "APP",
+			"onAutoForward": "notify"
+		},
+		"5261": {
+			"protocol": "http",
+			"label": "API",
+			"onAutoForward": "notify"
+		}
+	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "dotnet restore",
-
+	//"postCreateCommand": ["dotnet restore src/MyFirstProject.sln"],
+	"postCreateCommand": ".devcontainer/postCreateCommand.sh",
+	
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
@@ -31,7 +42,9 @@
 		  "extensions": [
 			"streetsidesoftware.code-spell-checker",
 			"vscode-icons-team.vscode-icons",
-			"ms-dotnettools.csdevkit"
+			"ms-dotnettools.csdevkit",
+			"GitHub.copilot",
+			"GitHub.copilot-chat"
 		  ]
 		}
 	  }

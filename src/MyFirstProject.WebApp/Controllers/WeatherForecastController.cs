@@ -22,24 +22,34 @@ namespace MyFirstProject.WebApp.Controllers
         // GET: WeatherForecastController
         public async Task<IActionResult> Index()
         {
-            List<WeatherForecastModel> lst = new List<WeatherForecastModel>();
-
-            using (var httpClient = new HttpClient())
+            try
             {
-                string _urlApi = _config.GetSection("Api:Url").Value;
-                _logger.LogInformation("URL API = " + _urlApi);
+                _logger.LogInformation("WeatherForecast Page");
 
-                httpClient.BaseAddress = new Uri(_urlApi);
-                httpClient.DefaultRequestHeaders.Accept.Clear();
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                List<WeatherForecastModel> lst = new List<WeatherForecastModel>();
 
-                using (var response = await httpClient.GetAsync("/api/WeatherForecast"))
+                using (var httpClient = new HttpClient())
                 {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    lst = JsonConvert.DeserializeObject<List<WeatherForecastModel>>(apiResponse);
+                    string _urlApi = _config.GetSection("Api:Url").Value;
+                    _logger.LogInformation("URL API = " + _urlApi);
+
+                    httpClient.BaseAddress = new Uri(_urlApi);
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    using (var response = await httpClient.GetAsync("/api/WeatherForecast"))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        lst = JsonConvert.DeserializeObject<List<WeatherForecastModel>>(apiResponse);
+                    }
                 }
+                return View(lst);
             }
-            return View(lst);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error on WeatherForecast Page");
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         // GET: WeatherForecastController/Details/5

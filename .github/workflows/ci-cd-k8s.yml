@@ -1,0 +1,196 @@
+name: dotnetcore-webapp-ci-cd-k8s
+
+on:
+  #push:
+  #  branches:
+  #    - feature/*
+  #    - release/*
+  #    - develop
+  #pull_request:
+  #  branches:
+  #    - develop
+  #    - main
+  workflow_dispatch: 
+
+env:
+  CONFIGURATION: Release
+  
+jobs:
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
+    - name: Dump runner context
+      env:
+        RUNNER_CONTEXT: ${{ toJson(runner) }}
+      run: echo "$RUNNER_CONTEXT"
+
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: ACR Login
+      run: az acr login --name ${{ vars.ACR_URL }}
+    
+    - name: Build and push WebApi image
+      uses: docker/build-push-action@v3
+      with:
+        context: src/MyFirstProject.WebApi
+        file: src/MyFirstProject.WebApi/Dockerfile
+        tags: |
+          ${{ vars.ACR_URL }}/myfirstproject.webapi:${{ GITHUB.RUN_NUMBER }}
+          ${{ vars.ACR_URL }}/myfirstproject.webapi:latest
+        push: true
+
+    - name: Build and push WebApp image
+      uses: docker/build-push-action@v3
+      with:
+        context: src/MyFirstProject.WebApp
+        file: src/MyFirstProject.WebApp/Dockerfile
+        tags: |
+          ${{ vars.ACR_URL }}/myfirstproject.webapp:${{ GITHUB.RUN_NUMBER }}
+          ${{ vars.ACR_URL }}/myfirstproject.webapp:latest
+        push: true
+    
+    - name: View images
+      run: docker images
+    
+    - name: Upload Kubernetes files
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        name: k8s
+        path: |
+          src/MyFirstProject.WebApi/k8s-deployment.yaml
+          src/MyFirstProject.WebApp/k8s-deployment.yaml
+  
+  k8s-dev:
+    runs-on: ubuntu-latest
+    needs: build-docker
+    environment: k8s-dev
+    steps:
+    
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
+    - name: Dump runner context
+      env:
+        RUNNER_CONTEXT: ${{ toJson(runner) }}
+      run: echo "$RUNNER_CONTEXT"
+
+    # Download k8s artifact
+    - name: Download k8s artifact
+      uses: actions/download-artifact@v3.0.0
+      with:
+        name: k8s
+        path: k8s-artifact
+
+    # Log into Azure
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Set the target Azure Kubernetes Service (AKS) cluster. 
+    - name: Deploy set context
+      uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ vars.AZ_AKS_NAME }}
+        resource-group: ${{ vars.AZ_RG_NAME }}
+
+    # Deploy app to AKS
+    - name: Deploy to k8s
+      uses: azure/k8s-deploy@v1
+      with:
+        namespace: default
+        manifests: |
+          k8s-artifact/MyFirstProject.WebApi/k8s-deployment.yaml
+          k8s-artifact/MyFirstProject.WebApp/k8s-deployment.yaml
+        images: |
+          ${{ vars.ACR_URL }}/myfirstproject.webapi:${{ GITHUB.RUN_NUMBER }}
+          ${{ vars.ACR_URL }}/myfirstproject.webapp:${{ GITHUB.RUN_NUMBER }}
+
+  k8s-hml:
+    runs-on: ubuntu-latest
+    needs: k8s-dev
+    environment: k8s-hml
+    steps:
+    # Download k8s artifact
+    - name: Download k8s artifact
+      uses: actions/download-artifact@v3.0.0
+      with:
+        name: k8s
+        path: k8s-artifact
+
+    # Log into Azure
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Set the target Azure Kubernetes Service (AKS) cluster. 
+    - name: Deploy set context
+      uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ vars.AZ_AKS_NAME }}
+        resource-group: ${{ vars.AZ_RG_NAME }}
+
+    # Deploy app to AKS
+    - name: Deploy to k8s
+      uses: azure/k8s-deploy@v1
+      with:
+        namespace: default
+        manifests: |
+          k8s-artifact/MyFirstProject.WebApi/k8s-deployment.yaml
+          k8s-artifact/MyFirstProject.WebApp/k8s-deployment.yaml
+        images: |
+          ${{ vars.ACR_URL }}/myfirstproject.webapi:${{ GITHUB.RUN_NUMBER }}
+          ${{ vars.ACR_URL }}/myfirstproject.webapp:${{ GITHUB.RUN_NUMBER }}
+  
+  k8s-prd:
+    runs-on: ubuntu-latest
+    needs: k8s-hml
+    environment: k8s-prd
+    steps:
+    # Download k8s artifact
+    - name: Download k8s artifact
+      uses: actions/download-artifact@v3.0.0
+      with:
+        name: k8s
+        path: k8s-artifact
+
+    # Log into Azure
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Set the target Azure Kubernetes Service (AKS) cluster. 
+    - name: Deploy set context
+      uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ vars.AZ_AKS_NAME }}
+        resource-group: ${{ vars.AZ_RG_NAME }}
+
+    # Deploy app to AKS
+    - name: Deploy to k8s
+      uses: azure/k8s-deploy@v1
+      with:
+        namespace: default
+        manifests: |
+          k8s-artifact/MyFirstProject.WebApi/k8s-deployment.yaml
+          k8s-artifact/MyFirstProject.WebApp/k8s-deployment.yaml
+        images: |
+          ${{ vars.ACR_URL }}/myfirstproject.webapi:${{ GITHUB.RUN_NUMBER }}
+          ${{ vars.ACR_URL }}/myfirstproject.webapp:${{ GITHUB.RUN_NUMBER }}

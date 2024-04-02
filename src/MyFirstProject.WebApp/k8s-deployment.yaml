@@ -1,0 +1,46 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: myfirstproject-app-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: myfirstproject-app
+    tier: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myfirstproject-app-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myfirstproject-app
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: myfirstproject-app
+        tier: frontend
+    spec:
+      containers:
+        - name: myfirstproject-app
+          image: "acrdotnetproject.azurecr.io/myfirstproject.webapp:latest"
+          env:
+            - name: Api__Url
+              value: "http://myfirstproject-api-svc.default.svc.cluster.local"
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "128Mi"

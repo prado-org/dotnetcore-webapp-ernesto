@@ -1,4 +1,4 @@
-name: iac
+name: dotnetcore-webapp-iac
 
 on:
   #push:
@@ -14,7 +14,7 @@ env:
   AZ_APP_NAME: dotnetproject
   
 jobs:
-  Infra:
+  Common:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -24,6 +24,26 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
+    - name: Create acr
+      uses: Azure/arm-deploy@v1
+      with:
+        scope: subscription
+        region: ${{ env.AZ_LOCATION }}
+        template: iac/main-common.bicep
+        deploymentMode: Incremental
+        deploymentName: 'gh-actions'
+        parameters: acrName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} webAppName=${{ env.AZ_APP_NAME }}
+  Dev:
+    runs-on: ubuntu-latest
+    needs: Common
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
     - name: Create environment dev
       uses: Azure/arm-deploy@v1
       with:
@@ -31,8 +51,18 @@ jobs:
         region: ${{ env.AZ_LOCATION }}
         template: iac/main.bicep
         deploymentMode: Incremental
-        deploymentName: 'gh-actions'
-        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev
+        deploymentName: 'gh-actions-dev'
+        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=dev acrName=${{ env.AZ_APP_NAME }}
+  Hml:
+    runs-on: ubuntu-latest
+    needs: Dev
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Create environment hml
       uses: Azure/arm-deploy@v1
@@ -41,8 +71,18 @@ jobs:
         region: ${{ env.AZ_LOCATION }}
         template: iac/main.bicep
         deploymentMode: Incremental
-        deploymentName: 'gh-actions'
-        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=hml
+        deploymentName: 'gh-actions-hml'
+        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=hml acrName=${{ env.AZ_APP_NAME }}
+  Prd:
+    runs-on: ubuntu-latest
+    needs: Hml
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Create environment prd
       uses: Azure/arm-deploy@v1
@@ -51,5 +91,5 @@ jobs:
         region: ${{ env.AZ_LOCATION }}
         template: iac/main.bicep
         deploymentMode: Incremental
-        deploymentName: 'gh-actions'
-        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=prd
+        deploymentName: 'gh-actions-prd'
+        parameters: webAppName=${{ env.AZ_APP_NAME }} location=${{ env.AZ_LOCATION }} environment=prd acrName=${{ env.AZ_APP_NAME }}
