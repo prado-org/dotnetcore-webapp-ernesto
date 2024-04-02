@@ -3,12 +3,10 @@ name: dotnetcore-webapp-ci-cd
 on:
   push:
     branches:
-      #- feature/*
+      - feature/*
       - release/*
-      - develop
   pull_request:
     branches:
-      - develop
       - main
 
 permissions:
@@ -129,7 +127,7 @@ jobs:
     environment:
       name: webapp-dev
       url: https://app-dotnetproject-dev.azurewebsites.net
-    if: ${{ github.ref == 'refs/heads/develop' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/download-artifact@v4
       
