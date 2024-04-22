@@ -15,9 +15,10 @@ env:
   
 jobs:
   Build:
-    runs-on: ubuntu-latest
-    #runs-on: dotnet-scaleset
-    #runs-on: self-hosted
+    runs-on: 
+      #labels: ubuntu-latest
+      group: larger-runner
+      #labels: linux
     steps:
     - name: Check Linux version
       if: ${{ runner.os == 'Linux' }}
