@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.Xml;
 
 namespace MyFirstProject.WebApi.Controllers
 {
@@ -31,6 +32,20 @@ namespace MyFirstProject.WebApi.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        public void ProcessRequest(string employeeName)
+        {
+            using (XmlWriter writer = XmlWriter.Create("employees.xml"))
+            {
+                writer.WriteStartDocument();
+
+                // BAD: Insert user input directly into XML
+                writer.WriteRaw("<employee><name>" + employeeName + "</name></employee>");
+
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+            }
         }
 
         private WeatherForecast WeatherForecastById(int id)
