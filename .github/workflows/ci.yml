@@ -16,9 +16,9 @@ env:
 jobs:
   Build:
     runs-on: 
-      labels: ubuntu-latest
-      #group: ubuntu-runners
-      #labels: ubuntu-20.04-16core
+      #labels: ubuntu-latest
+      group: larger-runner
+      #labels: linux
     steps:
     - name: Check Linux version
       if: ${{ runner.os == 'Linux' }}
